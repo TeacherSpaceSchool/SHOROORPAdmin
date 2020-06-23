@@ -24,22 +24,10 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
-    textFieldSmall: {
-        display: 'inline-block',
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width1
-    },
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: width,
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
     },
     message: {
         width: width,
@@ -47,16 +35,6 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit,
         marginLeft: 'calc((100% - '+width+'px)/2)',
         marginRight: 'calc((100% - '+width+'px)/2)'
-    },
-    MuiPickersToolbar: {
-        toolbar: {
-            backgroundColor: '#000',
-        },
-    },
-    MuiPickersModal: {
-        dialogAction: {
-            color: '#000',
-        },
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
@@ -175,7 +153,7 @@ const Plan = React.memo(
                     regions.map((element, idx)=>{
                     if(status.role=='admin'||(status.role=='организатор'&&profile.region===element.name))
                         return(
-                            <ExpansionPanel onClick={()=>{virtualList= {...virtualList}; virtualList[element.name]=true; setVirtualList(virtualList)}}>
+                            <ExpansionPanel key={idx} onClick={()=>{virtualList= {...virtualList}; virtualList[element.name]=true; setVirtualList(virtualList)}}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                                     <Typography className={classes.heading}>{element.name}</Typography>
                                     <Typography className={classes.secondaryHeading}>
@@ -186,7 +164,7 @@ const Plan = React.memo(
                                  {virtualList[element.name]===true&&element.points!=undefined&&element.points.length>0?
                                      element.points.map((element, idx1)=>{
                                          return(
-                                             <ExpansionPanelDetails>
+                                             <ExpansionPanelDetails key={idx}>
                                                  <center style={{width: '100%'}}>
                                                      <b>{element.name}</b><br/>
                                                      <div style={{width: '40px', marginRight: '10px', display: 'inline-block', verticalAlign: 'middle'}}>

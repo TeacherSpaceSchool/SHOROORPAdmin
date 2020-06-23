@@ -20,20 +20,6 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: width,
     },
-    error_message: {
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        color: 'red',
-        fontWeight: 'bold'
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
     menu: {
         width: 200,
     }
@@ -63,7 +49,6 @@ const Sign =  React.memo(
         const { showMiniDialog } = props.mini_dialogActions;
         const { setSelected, addData, setData } = props.tableActions;
         const { selected, data, page, search, sort } = props.table;
-        const { profile } = props.app;
         let [name, setName] = useState(selected!==-1?data[selected][0]:'');
         let handleName =  (event) => {
             setName(event.target.value)
@@ -141,8 +126,8 @@ const Sign =  React.memo(
                     }}
                     margin='normal'
                 >
-                    {regions.map(option => (
-                        <MenuItem key={option.guid} value={option.guid}>
+                    {regions.map((option, idx) => (
+                        <MenuItem  key={idx} value={option.guid}>
                             {option.name}
                         </MenuItem>
                     ))
@@ -162,8 +147,8 @@ const Sign =  React.memo(
                     }}
                     margin='normal'
                 >
-                    {points.map(option => (
-                        <MenuItem key={option.guid} value={option.guid}>
+                    {points.map((option, idx) => (
+                        <MenuItem key={idx} value={option.guid}>
                             {option.name}
                         </MenuItem>
                     ))
@@ -194,8 +179,8 @@ const Sign =  React.memo(
                     onChange={handleStatus}
                 >
                     {statuses != undefined?
-                        statuses.map(option => (
-                            <MenuItem key={option} value={option}>
+                        statuses.map((option, idx) => (
+                            <MenuItem  key={idx} value={option}>
                                 {option}
                             </MenuItem>
                         ))
@@ -225,10 +210,7 @@ const Sign =  React.memo(
 
 function mapStateToProps (state) {
     return {
-        mini_dialog: state.mini_dialog,
         table: state.table,
-        user: state.user,
-        app: state.app,
     }
 }
 

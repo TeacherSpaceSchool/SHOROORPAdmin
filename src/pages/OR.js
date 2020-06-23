@@ -33,34 +33,6 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: width1
     },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width,
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
-    message: {
-        width: width,
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: 'calc((100% - '+width+'px)/2)',
-        marginRight: 'calc((100% - '+width+'px)/2)'
-    },
-    MuiPickersToolbar: {
-        toolbar: {
-            backgroundColor: '#000',
-        },
-    },
-    MuiPickersModal: {
-        dialogAction: {
-            color: '#000',
-        },
-    },
     heading: {
         fontSize: theme.typography.pxToRem(15),
         flexBasis: '33.33%',
@@ -263,30 +235,6 @@ const Plan = React.memo(
                     if (isNaN(litr)) {
                         nakladnaya['vozvrat'][type][what] = ''
                     } else {
-                        if(type!=='v'||(type==='v'&&(what==='ml1'||what==='ml'||what==='chl'||what==='chl1'||what==='kl')))
-                        if(nakladnaya['vozvrat'][type]['time'].length===0){
-                            let date = new Date()
-                            let hours = date.getHours()
-                            let minute = date.getMinutes()
-                            if(minute>2){
-                                minute = minute - 3
-                                minute = minute.toString()
-                                if(minute.length===1){
-                                    minute = '0'+minute
-                                }
-                            } else {
-                                hours = hours - 1
-                                if(minute===0){
-                                    minute = '57'
-                                } else if(minute===1){
-                                    minute = '58'
-                                } else if(minute===2){
-                                    minute = '59'
-                                }
-                            }
-                            date = hours.toString()+':'+minute
-                            nakladnaya['vozvrat'][type]['time'] = date
-                        }
                         nakladnaya['vozvrat'][type][what] = litr
                     }
                     nakladnaya['vozvrat']['p'][what.substring(0,what.charAt(what.length-1)==='1'?what.length-1:what.length)] = checkInt(nakladnaya['vydano']['i'][what.substring(0,what.charAt(what.length-1)==='1'?what.length-1:what.length)]) - (checkInt(nakladnaya['vozvrat']['v'][what.substring(0,what.charAt(what.length-1)==='1'?what.length-1:what.length)]) + checkInt(nakladnaya['vozvrat']['v'][what.substring(0,what.charAt(what.length-1)==='1'?what.length-1:what.length)+'1']) + checkInt(nakladnaya['vozvrat']['s'][what.substring(0,what.charAt(what.length-1)==='1'?what.length-1:what.length)]))
@@ -306,6 +254,29 @@ const Plan = React.memo(
                 }
                 else {
                     nakladnaya['vozvrat'][type][what] = event.target.value
+                }
+                if(nakladnaya['vozvrat'][type]['time'].length===0){
+                    let date = new Date()
+                    let hours = date.getHours()
+                    let minute = date.getMinutes()
+                    if(minute>2){
+                        minute = minute - 3
+                        minute = minute.toString()
+                        if(minute.length===1){
+                            minute = '0'+minute
+                        }
+                    } else {
+                        hours = hours - 1
+                        if(minute===0){
+                            minute = '57'
+                        } else if(minute===1){
+                            minute = '58'
+                        } else if(minute===2){
+                            minute = '59'
+                        }
+                    }
+                    date = hours.toString()+':'+minute
+                    nakladnaya['vozvrat'][type]['time'] = date
                 }
                 nakladnaya['i']['fv'] = checkInt(nakladnaya['i']['iv']) - checkInt(nakladnaya['i']['m']) - checkInt(nakladnaya['i']['o']) - checkInt(nakladnaya['i']['n']) - checkInt(nakladnaya['i']['inc'])
                 setNakladnaya(nakladnaya)

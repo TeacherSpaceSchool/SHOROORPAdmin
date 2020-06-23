@@ -21,45 +21,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { DatePicker } from 'material-ui-pickers';
 export const datePicker = React.createRef();
 
-const width = mainWindow===undefined||mainWindow.current.offsetWidth>800? 500: 240;
-const width1 = mainWindow===undefined||mainWindow.current.offsetWidth>800? 240: 120;
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
-    },
-    textFieldSmall: {
-        display: 'inline-block',
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width1
-    },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width,
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
-    message: {
-        width: width,
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: 'calc((100% - '+width+'px)/2)',
-        marginRight: 'calc((100% - '+width+'px)/2)'
-    },
-    MuiPickersToolbar: {
-        toolbar: {
-            backgroundColor: '#000',
-        },
-    },
-    MuiPickersModal: {
-        dialogAction: {
-            color: '#000',
-        },
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),

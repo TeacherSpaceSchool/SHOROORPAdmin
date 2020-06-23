@@ -15,6 +15,8 @@ import Price from '../../component/Add/Price';
 import Delete from '../../component/Add/Delete';
 import Statistic from '../../component/Add/Statistic';
 import FAQ from '../../component/Add/FAQ';
+import SetRegion from '../../component/Add/SetRegion';
+import SetPoint from '../../component/Add/SetPoint';
 
 export function setMiniDialog(title,child) {
     return {
@@ -64,6 +66,36 @@ export function showSelectRealizators() {
         dispatch ({
             type: SET_MINI_DIALOG,
             payload: {title: 'Реализатор', child: child}
+        })
+        dispatch ({
+            type: SHOW_MINI_DIALOG,
+            payload: true
+        })
+    }
+}
+
+
+export function showSelectRegion() {
+    return async (dispatch) => {
+        let child = <SetRegion/>
+        dispatch ({
+            type: SET_MINI_DIALOG,
+            payload: {title: 'Регион', child: child}
+        })
+        dispatch ({
+            type: SHOW_MINI_DIALOG,
+            payload: true
+        })
+    }
+}
+
+
+export function showSelectPoint() {
+    return async (dispatch) => {
+        let child = <SetPoint/>
+        dispatch ({
+            type: SET_MINI_DIALOG,
+            payload: {title: 'Точка', child: child}
         })
         dispatch ({
             type: SHOW_MINI_DIALOG,

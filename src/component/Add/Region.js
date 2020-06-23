@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux'
@@ -7,7 +7,6 @@ import * as mini_dialogActions from '../../redux/actions/mini_dialog'
 import * as tableActions from '../../redux/actions/table'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
 import { mainWindow } from '../../App'
 const width = mainWindow===undefined||mainWindow.current.offsetWidth>800? 500: (mainWindow.current.offsetWidth-144);
 
@@ -20,23 +19,6 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: width,
     },
-    error_message: {
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        color: 'red',
-        fontWeight: 'bold'
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
-    menu: {
-        width: 200,
-    }
 });
 
 const Sign =  React.memo(
@@ -86,7 +68,6 @@ const Sign =  React.memo(
 
 function mapStateToProps (state) {
     return {
-        mini_dialog: state.mini_dialog,
         table: state.table,
     }
 }

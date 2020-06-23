@@ -39,29 +39,6 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: width,
     },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
-    message: {
-        width: width,
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: 'calc((100% - '+width+'px)/2)',
-        marginRight: 'calc((100% - '+width+'px)/2)'
-    },
-    MuiPickersToolbar: {
-        toolbar: {
-            backgroundColor: '#000',
-        },
-    },
-    MuiPickersModal: {
-        dialogAction: {
-            color: '#000',
-        },
-    },
     heading: {
         fontSize: theme.typography.pxToRem(15),
         flexBasis: '33.33%',
@@ -1310,8 +1287,8 @@ const Plan = React.memo(
                                 }}
                                 margin='normal'
                             >
-                                {autos.map(option => (
-                                    <MenuItem key={option} value={option}>
+                                {autos.map((option, idx) => (
+                                    <MenuItem key={idx} value={option}>
                                         {option}
                                     </MenuItem>
                                 ))

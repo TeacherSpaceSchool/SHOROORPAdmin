@@ -14,31 +14,10 @@ export const datePicker = React.createRef();
 const width = mainWindow===undefined||mainWindow.current.offsetWidth>800? 500: 240;
 const width1 = mainWindow===undefined||mainWindow.current.offsetWidth>800? 240: 120;
 const styles = theme => ({
-    button: {
-        width: '200px',
-        margin: theme.spacing.unit,
-    },
-    textFieldSmall: {
-        display: 'inline-block',
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width1
-    },
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: width,
-    },
-    textFieldDate: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width/2,
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
     },
     message: {
         width: width,
@@ -46,25 +25,6 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit,
         marginLeft: 'calc((100% - '+width+'px)/2)',
         marginRight: 'calc((100% - '+width+'px)/2)'
-    },
-    MuiPickersToolbar: {
-        toolbar: {
-            backgroundColor: '#000',
-        },
-    },
-    MuiPickersModal: {
-        dialogAction: {
-            color: '#000',
-        },
-    },
-    heading: {
-        fontSize: theme.typography.pxToRem(15),
-        flexBasis: '33.33%',
-        flexShrink: 0,
-    },
-    secondaryHeading: {
-        fontSize: theme.typography.pxToRem(15),
-        color: theme.palette.text.secondary,
     },
 });
 
@@ -121,10 +81,10 @@ const Plan = React.memo(
                     <br/>
                     <br/>
                     {
-                        list.map((element)=>{
+                        list.map((element, idx)=>{
                             if(element.name.toLowerCase().includes(search.toLowerCase()))
                                 return(
-                                    <center className={classes.message} style={{textAlign: 'left'}}>
+                                    <center key={idx} className={classes.message} style={{textAlign: 'left'}}>
                                         {(element.number)+'. '}
                                         <b>{element.name+': '}</b>
                                         {element.score}

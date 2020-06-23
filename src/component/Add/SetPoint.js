@@ -36,14 +36,9 @@ const Sign =  React.memo(
     (props) =>{
         const { classes } = props;
         const { showMiniDialog } = props.mini_dialogActions;
-        const { setTypeStatistic } = props.tableActions;
-        const { typeStatistic } = props.table;
-        let types = ['регион', 'точка', 'организатор', 'реализатор'];
-        let [type, setType] = useState(typeStatistic.type);
+        const { setSelectedPointGeo } = props.tableActions;
+        const { regionGeo } = props.table;
         let [list, setList] = useState([]);
-        let handleType =  (event) => {
-            setType(event.target.value)
-        };
         let [search, setSearch] = useState('');
         let handleSearch =  (event) => {
             setSearch(event.target.value)
@@ -51,61 +46,18 @@ const Sign =  React.memo(
         useEffect(()=>{
             async function fetchData() {
                 let data = [];
-                if(type==='регион'){
-                    let _data = await tableActions.getDataSimple({name: 'РегионИмя'})
-                    if (_data!==undefined) {
-                        data = _data
-                        data.unshift({name: 'все', guid: ''})
-                    }
-                }
-                else if(type==='точка'){
-                    let _data = await tableActions.getDataSimple({name: 'ТочкаИмя'})
-                    if (_data!==undefined) {
-                        data = _data
-                        data.unshift({name: 'все', guid: ''})
-                    }
-                }
-                else if(type==='организатор'){
-                    let _data = await tableActions.getDataSimple({name: 'ОрганизаторИмя'})
-                    if (_data!==undefined) {
-                        data = _data
-                        data.unshift({name: 'все', guid: ''})
-                    }
-                }
-                else if(type==='реализатор'){
-                    let _data = await tableActions.getDataSimple({name: 'РеализаторИмя'})
-                    if (_data!==undefined) {
-                        data = _data
-                        data.unshift({name: 'все', guid: ''})
-                    }
+                console.log(regionGeo)
+                let _data = await tableActions.getDataSimple({name: 'ТочкаПоРегиону', data: {region: regionGeo.guid}})
+                if (_data!==undefined) {
+                    data = _data
+                    data.unshift({name: 'ВСЕ', guid: ''})
                 }
                 setList(data)
             }
             fetchData();
-        },[type])
+        },[])
         return (
             <div>
-                <TextField
-                    select
-                    label='Тип'
-                    className={classes.textField}
-                    value={type}
-                    onChange={handleType}
-                    SelectProps={{
-                        MenuProps: {
-                            className: classes.menu,
-                        },
-                    }}
-                    margin='normal'
-                >
-                    {types.map((option, idx) => (
-                        <MenuItem  key={idx} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))
-                    }
-                </TextField>
-                <br/>
                 <TextField
                     label='Поиск'
                     type='login'
@@ -120,7 +72,9 @@ const Sign =  React.memo(
                         list.map((element, idx)=> {
                             if(element.name.toLowerCase().includes(search.toLowerCase()))
                                 return (
-                                    <Button key={idx} variant="outlined" onClick={()=>{setTypeStatistic({type: type, name: element.name, what: element.guid}); showMiniDialog(false)}} className={classes.button}>
+                                    <Button key={idx} variant="outlined" onClick={()=>{
+                                        setSelectedPointGeo({name: element.name, guid: element.guid});
+                                        showMiniDialog(false)}} className={classes.button}>
                                         {element.name}
                                     </Button>
                                 )

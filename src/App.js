@@ -22,16 +22,16 @@ const OR = lazy(() => import('./pages/OR'));
 const OO = lazy(() => import('./pages/OO'));
 const RR = lazy(() => import('./pages/RR'));
 const RO = lazy(() => import('./pages/RO'));
-const Profile = lazy(() => import('./pages/Profile'));
 const Blog = lazy(() => import('./pages/Blog'));
 const Statistic = lazy(() => import('./pages/Statistic'));
+const Geo = lazy(() => import('./pages/Geo'));
 export const mainWindow = React.createRef();
 
 const App = (
     (props) =>{
         const { checkAuthenticated, setStatus, setReiting } = props.userActions;
         const { setProfile } = props.appActions;
-        const { authenticated } = props.user;
+        const { authenticated, status } = props.user;
         useEffect(()=>{
             checkAuthenticated();
         },[])
@@ -49,16 +49,21 @@ const App = (
             }
             fetchData();
         },[authenticated])
+        useEffect( ()=>{
+            if(status.role!==undefined&&status.role!=='admin')
+                props.history.push('/blog')
+        },[status])
         return (
               <div ref={mainWindow} className='App'>
                   <Suspense fallback={null}>
                       <AppBar history={props.history} location={props.location}/>
                   </Suspense>
                   <Suspense fallback={null}>
-                      <Drawer history={props.history}/>
+                      <Drawer history={props.history} location={props.location}/>
                   </Suspense>
                   <div className='App-body'>
                       <Switch>
+                          <Route  path='/profile' exact component={WaitingComponent(Main, props.history, props.location)}/>
                           <Route  path='/' exact component={WaitingComponent(Main, props.history, props.location)}/>
                           <Route  path='/plan' exact component={WaitingComponent(Plan, props.history, props.location)}/>
                           <Route  path='/nnpt' exact component={WaitingComponent(NNPT, props.history, props.location)}/>
@@ -71,8 +76,8 @@ const App = (
                           <Route  path='/ro' exact component={WaitingComponent(RO, props.history, props.location)}/>
                           <Route  path='/blog' exact component={WaitingComponent(Blog, props.history, props.location)}/>
                           <Route  path='/FAQ' exact component={WaitingComponent(FAQ, props.history, props.location)}/>
-                          <Route  path='/profile' exact component={WaitingComponent(Profile, props.history, props.location)}/>
                           <Route  path='/statistic' exact component={WaitingComponent(Statistic, props.history, props.location)}/>
+                          <Route  path='/geo' exact component={WaitingComponent(Geo, props.history, props.location)}/>
                       </Switch>
                   </div>
                   <Suspense fallback={null}>

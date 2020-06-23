@@ -33,34 +33,6 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: width1
     },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width,
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
-    message: {
-        width: width,
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: 'calc((100% - '+width+'px)/2)',
-        marginRight: 'calc((100% - '+width+'px)/2)'
-    },
-    MuiPickersToolbar: {
-        toolbar: {
-            backgroundColor: '#000',
-        },
-    },
-    MuiPickersModal: {
-        dialogAction: {
-            color: '#000',
-        },
-    },
     heading: {
         fontSize: theme.typography.pxToRem(15),
         flexBasis: '33.33%',
@@ -392,11 +364,15 @@ const Plan = React.memo(
                 } else {
                     nakladnaya[where][type][what] = litr
                 }
-                if(type !== 'n'){
+                if(type !== 's'&&where==='vozvrat'){
                     nakladnaya[where][type]['ml'] = checkInt(nakladnaya[where][type]['m25']) * 24
                     nakladnaya[where][type]['chl'] = checkInt(nakladnaya[where][type]['ch25']) * 24 + checkInt(nakladnaya[where][type]['ch10']) * 10
                     nakladnaya[where][type]['kl'] = checkInt(nakladnaya[where][type]['k25']) * 24 + checkInt(nakladnaya[where][type]['k10']) * 10
-                }
+                }/* else if(type !== 'n'&&type !== 'r'&&type !== 'd1'&&where==='vydano'){
+                    nakladnaya[where][type]['ml'] = checkInt(nakladnaya[where][type]['m25']) * 24
+                    nakladnaya[where][type]['chl'] = checkInt(nakladnaya[where][type]['ch25']) * 24 + checkInt(nakladnaya[where][type]['ch10']) * 10
+                    nakladnaya[where][type]['kl'] = checkInt(nakladnaya[where][type]['k25']) * 24 + checkInt(nakladnaya[where][type]['k10']) * 10
+                }*/
                 
                 let s = nakladnaya[where]['s']!==undefined?checkInt(nakladnaya[where]['s'][what]):0
                 nakladnaya[where]['i'][what] = checkInt(nakladnaya[where]['n'][what]) + checkInt(nakladnaya[where]['r'][what]) + checkInt(nakladnaya[where]['d1'][what]) + checkInt(nakladnaya[where]['d2'][what]) + checkInt(nakladnaya[where]['d3'][what]) + s

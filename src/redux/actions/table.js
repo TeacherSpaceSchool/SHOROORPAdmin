@@ -1,13 +1,14 @@
 import {
     GET_DATA,
     SET_TYPE_STATISTIC,
-    GET_IDS,
     SET_SELECTED,
     SET_POINT,
     SET_DELETED_ID,
     SET_OLD_FILE,
     SET_SELECTED_POINT,
-    SET_SELECTED_REGION
+    SET_SELECTED_REGION,
+    SET_SELECTED_POINT_GEO,
+    SET_SELECTED_REGION_GEO
 } from '../constants/table'
 import {
     showSnackBar
@@ -35,6 +36,8 @@ axios.interceptors.response.use(response => {
         store.dispatch(showSnackBar('Пользователь не найден'))
     } else if(error.response.data.includes('Login failed')){
         store.dispatch(showSnackBar('Пользователь не найден'))
+    } else if(error.response.data.includes('is required')){
+        store.dispatch(showSnackBar('Все поля должны быть заполнены'))
     } else {
         console.log(error.response.data)
         store.dispatch(showSnackBar(error.response.data))
@@ -44,15 +47,15 @@ axios.interceptors.response.use(response => {
 
 function tac(name, data) {
      let data1 = []
-    if (name == 'Реализатор') {
+    if (name === 'Реализатор') {
         for (let i = 0; i < data.length; i++)
             data1[i] = [data[i][0], data[i][1], data[i][2]]
     }
-    else if (name == 'Организатор') {
+    else if (name === 'Организатор') {
         for (let i = 0; i < data.length; i++)
             data1[i] = [data[i][0], data[i][1]]
     }
-    else if (name == 'Организатор') {
+    else if (name === 'Организатор') {
         for (let i = 0; i < data.length; i++)
             data1[i] = [data[i][0], data[i][1]]
     }
@@ -60,7 +63,7 @@ function tac(name, data) {
         for (let i = 0; i < data.length; i++)
             data1[i] = [data[i][0], data[i][1]]
     }
-    else if (name == 'Блог') {
+    else if (name === 'Блог') {
         for (let i = 0; i < data.length; i++) {
             let text = data[i][2].substring(0, 200) + '...'
             data1[i] = [data[i][0], data[i][1], text, data[i][3]]
@@ -183,7 +186,7 @@ export function setData(payload) {
         };
     }
     else {
-        store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+        //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
         return async (dispatch) => {
             let payload = (await getGetSimpleByIndex(name))
             if(payload!==undefined) {
@@ -278,7 +281,7 @@ export function addData(payload) {
                     putGetSimpleByIndex(name, payload)
                 }
                 else {
-                    store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+                    //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
                     let res = await getGetSimpleByIndex(name)
                     if(res!==undefined) {
                         payload = res.data
@@ -289,7 +292,7 @@ export function addData(payload) {
                     payload: payload
                 })
             } catch (error) {
-                store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+                //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
                 console.error(error)
                 let payload = await getGetSimpleByIndex(name)
                 if(payload!==undefined) {
@@ -301,7 +304,7 @@ export function addData(payload) {
             }
         };
     } else {
-        store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+        //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
         return async (dispatch) => {
             let payload = (await getGetSimpleByIndex(name))
             if(payload!==undefined) {
@@ -345,6 +348,20 @@ export function setSelectedPoint(payload) {
 export function setSelectedRegion(payload) {
     return {
         type: SET_SELECTED_REGION,
+        payload: payload
+    }
+}
+
+export function setSelectedPointGeo(payload) {
+    return {
+        type: SET_SELECTED_POINT_GEO,
+        payload: payload
+    }
+}
+
+export function setSelectedRegionGeo(payload) {
+    return {
+        type: SET_SELECTED_REGION_GEO,
         payload: payload
     }
 }
@@ -484,7 +501,7 @@ export function getData(payload) {
                         putGetSimpleByIndex(name, payload)
                     }
                     else if(await getGetSimpleByIndex(name)!==undefined) {
-                        store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+                        //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
                         let res = await getGetSimpleByIndex(name)
                         if(res!==undefined) {
                             payload = res.data
@@ -492,7 +509,7 @@ export function getData(payload) {
                     }
                 }
                 else {
-                     store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+                     //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
                      let res = await getGetSimpleByIndex(name)
                      if(res!==undefined) {
                          payload = res.data
@@ -542,7 +559,7 @@ export const getDataSimple = async (payload) => {
                 }
                 putGetSimpleByIndex(name, res.data)
             } else {
-                 store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+                 //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
                 res = await getGetSimpleByIndex(name)
             }
             if(res!==undefined)
@@ -625,7 +642,7 @@ export function deleteData(payload) {
                     putGetSimpleByIndex(name, payload)
                 }
                 else {
-                    store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+                    //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
                     let res = await getGetSimpleByIndex(name)
                     if(res!==undefined) {
                         payload = res.data
@@ -648,7 +665,7 @@ export function deleteData(payload) {
             }
         };
     } else {
-        store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
+        //store.dispatch(showSnackBar('Проверьте соединение с интернетом'))
         return async (dispatch) => {
                 let payload = (await getGetSimpleByIndex(name))
                 if(payload!==undefined) {

@@ -29,11 +29,6 @@ const styles = {
     grow: {
         flexGrow: 1,
     },
-    menuButton: {
-        width: 50,
-        marginLeft: 10,
-        marginRight: 20,
-    },
 };
 
 const MyAppBar = React.memo(
@@ -41,8 +36,8 @@ const MyAppBar = React.memo(
         const { authenticated, status } = props.user;
         const { classes, location } = props;
         const { logout } = props.userActions;
-        const { selected, name, region, point } = props.table;
-        const { drawer, profile } = props.app;
+        const { selected, name } = props.table;
+        const { drawer } = props.app;
         const { showDrawer } = props.appActions;
         const { setMiniDialog, showMiniDialog, showAddMiniDialog, showSelectRealizators } = props.mini_dialogActions;
         let currentPath = location.pathname.split('/')[1];
@@ -83,7 +78,7 @@ const MyAppBar = React.memo(
                                 {mainWindow.current.offsetWidth>450?
                                     authenticated ?
                                         <div>
-                                            {navigator.onLine && !['', 'Организатор', 'Регион', 'Точка', 'Отчет реализатора', 'Отчет организатора', 'Накладная на вечерний возврат', 'Накладная склад №2', 'Накладная склад №1', 'Накладная на пустую тару' , 'Отчет реализатора сегодня' , 'Отчет организатора сегодня', 'Накладная на вечерний возврат сегодня', 'Накладная склад №2 сегодня', 'Накладная склад №1 сегодня', 'Накладная на пустую тару сегодня'].includes(name) && !['blog','FAQ', 'plan', 'nnpt', 'nnvv', 'ns1', 'ns2', 'oo', 'or'].includes(currentPath)  && status.role==='admin' ?
+                                            {navigator.onLine && !['', 'Реализатор', 'Организатор', 'Регион', 'Точка', 'Цена', 'Отчет реализатора', 'Отчет организатора', 'Накладная на вечерний возврат', 'Накладная склад №2', 'Накладная склад №1', 'Накладная на пустую тару' , 'Отчет реализатора сегодня' , 'Отчет организатора сегодня', 'Накладная на вечерний возврат сегодня', 'Накладная склад №2 сегодня', 'Накладная склад №1 сегодня', 'Накладная на пустую тару сегодня'].includes(name) && !['blog','FAQ', 'plan', 'nnpt', 'nnvv', 'ns1', 'ns2', 'oo', 'or'].includes(currentPath)  && status.role==='admin' ?
                                                     <Button  variant="outlined" color="inherit" onClick={()=>{
                                                         if(name==='План')
                                                             props.history.push('/plan')
@@ -155,7 +150,7 @@ const MyAppBar = React.memo(
                                         >
                                             {authenticated ?
                                                 <>
-                                                {navigator.onLine && !['', 'Организатор', 'Регион', 'Точка', 'Отчет реализатора', 'Отчет организатора', 'Накладная на вечерний возврат', 'Накладная склад №2', 'Накладная склад №1', 'Накладная на пустую тару' , 'Отчет реализатора сегодня' , 'Отчет организатора сегодня', 'Накладная на вечерний возврат сегодня', 'Накладная склад №2 сегодня', 'Накладная склад №1 сегодня', 'Накладная на пустую тару сегодня'].includes(name) && !['blog','FAQ', 'plan', 'nnpt', 'nnvv', 'ns1', 'ns2', 'oo', 'or'].includes(currentPath)  && status.role==='admin' ?
+                                                {navigator.onLine && !['', 'Цена', 'Организатор', 'Регион', 'Точка', 'Отчет реализатора', 'Отчет организатора', 'Накладная на вечерний возврат', 'Накладная склад №2', 'Накладная склад №1', 'Накладная на пустую тару' , 'Отчет реализатора сегодня' , 'Отчет организатора сегодня', 'Накладная на вечерний возврат сегодня', 'Накладная склад №2 сегодня', 'Накладная склад №1 сегодня', 'Накладная на пустую тару сегодня'].includes(name) && !['blog','FAQ', 'plan', 'nnpt', 'nnvv', 'ns1', 'ns2', 'oo', 'or'].includes(currentPath)  && status.role==='admin' ?
                                                     <MenuItem onClick={()=>
                                                     {handleClose();
                                                         if(name==='План')

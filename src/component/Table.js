@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import MUIDataTable from 'mui-datatables';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as tableActions from '../redux/actions/table'
 import {skip} from '../redux/constants/other'
 import * as mini_dialogActions from '../redux/actions/mini_dialog'
-import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { mainWindow } from '../App'
@@ -74,8 +73,8 @@ const Table = React.memo(
         })
         const { row, count, page, data, data1, name, search, sort } = props.table;
         const { getData, setSelected, setOldFile, setDeletedId } = props.tableActions;
-        const { showAddMiniDialog, setMiniDialog, showMiniDialog, showDelete } = props.mini_dialogActions;
-        const { authenticated } = props.user;
+        const { showAddMiniDialog, showDelete } = props.mini_dialogActions;
+        const { authenticated, status, reiting } = props.user;
         const options = {
             serverSide: true,
             filterType: 'checkbox',
@@ -125,7 +124,7 @@ const Table = React.memo(
                     } else if(name === 'Накладная на пустую тару'||name === 'Накладная склад №1'||name === 'Накладная склад №2'||name === 'Накладная на вечерний возврат'||name === 'Отчет организатора'||name === 'Накладная на пустую тару сегодня'||name === 'Накладная склад №1 сегодня'||name === 'Накладная склад №2 сегодня'||name === 'Накладная на вечерний возврат сегодня'||name === 'Отчет организатора сегодня'){
                         deletedId.push('|'+data[rowsDeleted.data[i].index][2]+': '+data[rowsDeleted.data[i].index][3]+'|'+data[rowsDeleted.data[i].index][1])
                     } else if(name === 'Отчет реализатора'||name === 'Отчет реализатора сегодня'){
-                        deletedId.push('|'+'|'+data[rowsDeleted.data[i].index][0]+'|'+data[rowsDeleted.data[i].index][1])
+                        deletedId.push(data[rowsDeleted.data[i].index][4]+'|'+data[rowsDeleted.data[i].index][2]+'|'+data[rowsDeleted.data[i].index][3]+'|'+data[rowsDeleted.data[i].index][1])
                     } else
                         deletedId.push(data[rowsDeleted.data[i].index][data[rowsDeleted.data[i].index].length-1])
                     if(data[rowsDeleted.data[i].index][0]!=undefined&&
@@ -139,7 +138,7 @@ const Table = React.memo(
             },
             onCellClick: (colData, colMeta) => {
                 colData = colData.toString()
-                if(colData!=undefined&&!(colData.substring(0, 1).includes('/')||colData.includes('http')||colData.includes('https'))) {
+                if(colData!=undefined) {
                     setSelected(colMeta.rowIndex)
                     if(name === 'План'){
                         props.history.push('/plan')
@@ -170,12 +169,6 @@ const Table = React.memo(
                     } else {
                         showAddMiniDialog()
                     }
-                } else {
-                    let images = []
-                    for (let i = 0; i<colData.split('\n').length; i++)
-                        images.push({original: colData.split('\n')[i], thumbnail: colData.split('\n')[i]})
-                    setMiniDialog('Просмотр', <ImageGallery items={images} showThumbnails={false} showFullscreenButton={false} showPlayButton={false} />);
-                    showMiniDialog(true)
                 }
             },
             onTableChange: (action, tableState) => {
@@ -186,10 +179,9 @@ const Table = React.memo(
             }
         };
         const { profile } = props.app;
-        const { status, reiting } = props.user;
         return (
                 <>
-                    {authenticated&&name!=''?
+                    {authenticated&&name!==''?
                         <MuiThemeProvider theme={getMuiTheme()}>
                             <MUIDataTable
                                 title={name}

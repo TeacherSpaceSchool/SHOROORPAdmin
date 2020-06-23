@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux'
@@ -20,20 +20,6 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: width,
     },
-    error_message: {
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        color: 'red',
-        fontWeight: 'bold'
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
     menu: {
         width: 200,
     }
@@ -42,8 +28,8 @@ const styles = theme => ({
 const Sign =  React.memo(
     (props) =>{
         const { showMiniDialog } = props.mini_dialogActions;
-        const { setSelected, addData, setData } = props.tableActions;
-        const { selected, data, page, search, sort } = props.table;
+        const { setSelected } = props.tableActions;
+        const { selected, data } = props.table;
         let names = ['Максым', 'Чалап', 'Квас', 'Стакан Легенда']
         let [name, setName] = useState(selected!==-1?data[selected][0]:'');
         let handleName =  (event) => {
@@ -58,6 +44,9 @@ const Sign =  React.memo(
             <div>
                 <TextField
                     select
+                    InputProps={{
+                        readOnly: true,
+                    }}
                     label='название'
                     className={classes.textField}
                     value={name}
@@ -69,8 +58,8 @@ const Sign =  React.memo(
                     }}
                     margin='normal'
                 >
-                    {names.map(option => (
-                        <MenuItem key={option} value={option}>
+                    {names.map((option, idx) => (
+                        <MenuItem key={idx} value={option}>
                             {option}
                         </MenuItem>
                     ))
@@ -78,6 +67,9 @@ const Sign =  React.memo(
                 </TextField>
                 <br/>
                 <TextField
+                    InputProps={{
+                        readOnly: true,
+                    }}
                     label='цена'
                     type='login'
                     className={classes.textField}
@@ -87,15 +79,6 @@ const Sign =  React.memo(
                 />
                 <br/>
                 <div>
-                    <Button variant='contained' color='primary' onClick={()=>{
-                        if(selected===-1)
-                            addData({search: search, sort: sort, page: page, name: 'Цена',  data: {name: name, price: price.trim()}});
-                        else
-                            setData({id: data[selected][0], search: search, sort: sort, page: page, name: 'Цена', data: {name: name, price: price.trim()}});
-                        setSelected(-1)
-                        showMiniDialog(false)}} className={classes.button}>
-                        Сохранить
-                    </Button>
                     <Button variant='contained' color='secondary' onClick={()=>{setSelected(-1); showMiniDialog(false)}} className={classes.button}>
                         Отмена
                     </Button>
@@ -107,7 +90,6 @@ const Sign =  React.memo(
 
 function mapStateToProps (state) {
     return {
-        mini_dialog: state.mini_dialog,
         table: state.table,
     }
 }

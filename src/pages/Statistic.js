@@ -24,50 +24,15 @@ import { DatePicker } from 'material-ui-pickers';
 export const datePicker = React.createRef();
 
 const width = mainWindow===undefined||mainWindow.current.offsetWidth>800? 500: 240;
-const width1 = mainWindow===undefined||mainWindow.current.offsetWidth>800? 240: 120;
 const styles = theme => ({
     button: {
         width: '200px',
         margin: theme.spacing.unit,
     },
-    textFieldSmall: {
-        display: 'inline-block',
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width1
-    },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width,
-    },
     textFieldDate: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: width/2,
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
-    message: {
-        width: width,
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: 'calc((100% - '+width+'px)/2)',
-        marginRight: 'calc((100% - '+width+'px)/2)'
-    },
-    MuiPickersToolbar: {
-        toolbar: {
-            backgroundColor: '#000',
-        },
-    },
-    MuiPickersModal: {
-        dialogAction: {
-            color: '#000',
-        },
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
@@ -129,8 +94,8 @@ const Plan = React.memo(
                     onChange={handleStatus}
                 >
                     {statuses != undefined?
-                        statuses.map(option => (
-                            <MenuItem key={option} value={option}>
+                        statuses.map((option, idx) => (
+                            <MenuItem key={idx} value={option}>
                                 {option}
                             </MenuItem>
                         ))
@@ -169,9 +134,9 @@ const Plan = React.memo(
                 </Button>
 
                 {list!=undefined&&list.length>0?
-                    list.map((element)=> {
+                    list.map((element, idx)=> {
                         return(
-                            <ExpansionPanel>
+                            <ExpansionPanel key={idx}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                                     <Typography className={classes.heading}>{element.date}</Typography>
                                     <Typography className={classes.secondaryHeading}>
@@ -734,7 +699,6 @@ const Plan = React.memo(
 
 function mapStateToProps (state) {
     return {
-        user: state.user,
         table: state.table,
     }
 }

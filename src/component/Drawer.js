@@ -12,7 +12,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { mainWindow } from '../App'
 import * as tableActions from '../redux/actions/table'
-import * as userActions from '../redux/actions/user'
 import * as appActions from '../redux/actions/app'
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/UnfoldLess';
@@ -34,6 +33,7 @@ import Receipt from '@material-ui/icons/Receipt';
 import LocationCity from '@material-ui/icons/LocationCity';
 import Archive from '@material-ui/icons/Archive';
 import All from '@material-ui/icons/AllInbox';
+import GpsFixed from '@material-ui/icons/GpsFixed';
 
 
 const drawerWidth = 300;
@@ -47,13 +47,12 @@ const styles = theme => ({
         width: drawerWidth,
     },
     toolbar: theme.mixins.toolbar,
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: 200,
-    },
     nested: {
         paddingLeft: theme.spacing.unit * 4,
+    },
+    nestedSelectedItem: {
+        paddingLeft: theme.spacing.unit * 4,
+        background: '#C1C1C1',
     },
     nested1: {
         paddingLeft: theme.spacing.unit * 6,
@@ -77,15 +76,17 @@ const MyDrawer = React.memo(
     (props) =>{
         const { drawer, profile } = props.app;
         const { status } = props.user;
+        const { name } = props.table;
         const { showDrawer } = props.appActions;
         const { getData, setSelected } = props.tableActions;
-        const { classes } = props;
+        const { classes, location } = props;
         let [secondMenuOpen, setSecondMenuOpen] = useState({});
         let [thirdMenuOpen, setThirdMenuOpen] = useState({});
         let [fourthMenuOpen, setFourthMenuOpen] = useState({});
         let [regionList, setRegionList] = useState([]);
         let [pointList, setPointList] = useState([]);
         let [selectedRegion, setSelectedRegion] = useState('');
+        let currentPath = location.pathname.split('/')[1];
 
         useEffect(()=>{
             async function fetchData() {
@@ -181,7 +182,7 @@ const MyDrawer = React.memo(
                             {
                                 status.status==='active'&&['реализатор', 'организатор'].includes(status.role)?
                                     <div>
-                                        <ListItem button key={'event'} onClick={()=>{props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: ''}); setSelected(-1)}}>
+                                        <ListItem button key={'event'} onClick={()=>{props.history.push('/profile');showDrawer(false); getData({search: '', sort: '', page: 0, name: ''}); setSelected(-1)}}>
                                             <ListItemIcon>
                                                 <Face />
                                             </ListItemIcon>
@@ -206,7 +207,11 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Регион'}); setSelected(-1)}}>
+                                                        <ListItem className={name==='Регион'&&currentPath===''?classes.nestedSelectedItem:classes.nested}
+                                                                  button key={'event'}
+                                                                  onClick={()=>{
+                                                                      collapse1('регион')
+                                                                      props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Регион'}); setSelected(-1)}}>
                                                             <ListItemIcon><LocationCity /></ListItemIcon>
                                                             <ListItemText primary={'Регион'} />
                                                         </ListItem>
@@ -245,9 +250,9 @@ const MyDrawer = React.memo(
                                                                 </ListItem>
                                                                 <Divider variant='inset'/>
                                                                 {regionList!=undefined&&regionList.length>0?
-                                                                    regionList.map((element)=>{
+                                                                    regionList.map((element, idx)=>{
                                                                     return(
-                                                                        <>
+                                                                        <React.Fragment key={idx}>
                                                                         <ListItem className={selectedItem['Точка'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
                                                                             props.history.push('/');
                                                                             showDrawer(false);
@@ -259,7 +264,7 @@ const MyDrawer = React.memo(
                                                                             <ListItemText primary={element.name} />
                                                                         </ListItem>
                                                                         <Divider variant='inset'/>
-                                                                        </>
+                                                                        </React.Fragment>
                                                                     )
                                                                     }):null}
                                                             </List>
@@ -271,7 +276,8 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Организатор'}); setSelected(-1)}}>
+                                                        <ListItem className={name==='Организатор'&&currentPath===''?classes.nestedSelectedItem:classes.nested
+                                                        } button key={'event'} onClick={()=>{collapse1('организатор');props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Организатор'}); setSelected(-1)}}>
                                                             <ListItemIcon><AssignmentInd /></ListItemIcon>
                                                             <ListItemText primary={'Организатор'} />
                                                         </ListItem>
@@ -284,50 +290,58 @@ const MyDrawer = React.memo(
                                                     ['admin', 'организатор'].includes(status.role)?
                                                         <>
                                                         <ListItem className={classes.nested} button key={'event'} onClick={()=>{
-                                                            if(status.role==='организатор') {
+                                                            /*if(status.role==='организатор') {
                                                                 props.history.push('/');
                                                                 showDrawer(false);
                                                                 getData({search: '', sort: '', page: 0, name: 'Реализатор'});
                                                                 setSelected(-1)
-                                                            } else
+                                                            } else*/
                                                                 collapse1('данныеРеализатор')
 
                                                         }}>
                                                             <ListItemIcon><AssignmentInd /></ListItemIcon>
                                                             <ListItemText primary={'Реализатор'} />
-                                                            {status.role==='организатор'?null:thirdMenuOpen['данныеРеализатор'] ? <ExpandLess /> : <ExpandMore />}
+                                                            {/*status.role==='организатор'?null:*/thirdMenuOpen['данныеРеализатор'] ? <ExpandLess /> : <ExpandMore />}
                                                         </ListItem>
                                                         <Divider variant='inset'/>
                                                         <Collapse in={thirdMenuOpen['данныеРеализатор']} timeout='auto' unmountOnExit>
                                                             <List component='div' disablePadding>
-                                                                <ListItem className={selectedItem['РеализаторВсе']?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
-                                                                    props.history.push('/');
-                                                                    showDrawer(false);
-                                                                    getData({search: '', sort: '', page: 0, name: 'Реализатор', region: ''});
-                                                                    setSelected(-1);
-                                                                    collapseSelectedItem('РеализаторВсе')
-                                                                }}>
-                                                                    <ListItemIcon><All /></ListItemIcon>
-                                                                    <ListItemText primary={'Все'} />
-                                                                </ListItem>
-                                                                <Divider variant='inset'/>
+                                                                {
+                                                                    status.role!='организатор'?
+                                                                        <>
+                                                                        <ListItem className={selectedItem['РеализаторВсе']?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
+                                                                            props.history.push('/');
+                                                                            showDrawer(false);
+                                                                            getData({search: '', sort: '', page: 0, name: 'Реализатор', region: ''});
+                                                                            setSelected(-1);
+                                                                            collapseSelectedItem('РеализаторВсе')
+                                                                        }}>
+                                                                            <ListItemIcon><All /></ListItemIcon>
+                                                                            <ListItemText primary={'Все'} />
+                                                                        </ListItem>
+                                                                        <Divider variant='inset'/>
+                                                                        </>
+                                                                        :
+                                                                        null
+                                                                }
                                                                 {regionList!=undefined&&regionList.length>0?
-                                                                    regionList.map((element)=>{
-                                                                        return(
-                                                                            <>
-                                                                            <ListItem className={selectedItem['Реализатор'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
-                                                                                props.history.push('/');
-                                                                                showDrawer(false);
-                                                                                getData({search: '', sort: '', page: 0, name: 'Реализатор', region: element.guid});
-                                                                                setSelected(-1);
-                                                                                collapseSelectedItem('Реализатор'+element.guid)
-                                                                            }}>
-                                                                                <ListItemIcon><AssignmentInd /></ListItemIcon>
-                                                                                <ListItemText primary={element.name} />
-                                                                            </ListItem>
-                                                                            <Divider variant='inset'/>
-                                                                            </>
-                                                                        )
+                                                                    regionList.map((element, idx)=>{
+                                                                        if(status.role!='организатор'||profile.guidRegion===element.guid||'lol'===element.guid)
+                                                                            return(
+                                                                                <React.Fragment key={idx}>
+                                                                                    <ListItem className={selectedItem['Реализатор'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
+                                                                                        props.history.push('/');
+                                                                                        showDrawer(false);
+                                                                                        getData({search: '', sort: '', page: 0, name: 'Реализатор', region: element.guid});
+                                                                                        setSelected(-1);
+                                                                                        collapseSelectedItem('Реализатор'+element.guid)
+                                                                                    }}>
+                                                                                        <ListItemIcon><AssignmentInd /></ListItemIcon>
+                                                                                        <ListItemText primary={element.name} />
+                                                                                    </ListItem>
+                                                                                    <Divider variant='inset'/>
+                                                                                </React.Fragment>
+                                                                            )
                                                                     }):null}
                                                             </List>
                                                         </Collapse>
@@ -335,7 +349,7 @@ const MyDrawer = React.memo(
                                                         :
                                                         null
                                                 }
-                                                {
+                                                {/*
                                                     ['admin'].includes(status.role)?
                                                         <>
                                                         <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Завсклада'}); setSelected(-1)}}>
@@ -345,12 +359,12 @@ const MyDrawer = React.memo(
                                                         <Divider variant='inset'/>
                                                         </>
                                                         :
-                                                        null
+                                                        null*/
                                                 }
                                                 {
                                                     ['admin'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Машина'}); setSelected(-1)}}>
+                                                        <ListItem className={name==='Машина'&&currentPath===''?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{collapse1('машина');props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Машина'}); setSelected(-1)}}>
                                                             <ListItemIcon><Commute /></ListItemIcon>
                                                             <ListItemText primary={'Машина'} />
                                                         </ListItem>
@@ -362,7 +376,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Цена'}); setSelected(-1)}}>
+                                                        <ListItem className={name==='Цена'&&currentPath===''?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{collapse1('цена');props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'Цена'}); setSelected(-1)}}>
                                                             <ListItemIcon><AccountBalance /></ListItemIcon>
                                                             <ListItemText primary={'Цена'} />
                                                         </ListItem>
@@ -391,7 +405,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{
+                                                        <ListItem className={(currentPath=='nnvv'&&status.role==='организатор')||(name==='Накладная на вечерний возврат сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/nnvv')
                                                             } else {
@@ -400,6 +414,7 @@ const MyDrawer = React.memo(
                                                                 getData({search: '', sort: '', page: 0, name: 'Накладная на вечерний возврат сегодня'});
                                                                 setSelected(-1)
                                                             }
+                                                            collapse1('nnvv');
                                                         }}>
                                                             <ListItemIcon><Receipt /></ListItemIcon>
                                                             <ListItemText primary={'Накладная на вечерний возврат сегодня'} />
@@ -412,7 +427,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{
+                                                        <ListItem className={(currentPath=='nnpt'&&status.role==='организатор')||(name==='Накладная на пустую тару сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
 
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/nnpt')
@@ -422,7 +437,7 @@ const MyDrawer = React.memo(
                                                                 getData({search: '', sort: '', page: 0, name: 'Накладная на пустую тару сегодня'});
                                                                 setSelected(-1)
                                                             }
-
+                                                            collapse1('nnpt');
                                                         }}>
                                                             <ListItemIcon><Receipt /></ListItemIcon>
                                                             <ListItemText primary={'Накладная на пустую тару сегодня'} />
@@ -435,7 +450,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{
+                                                        <ListItem className={(currentPath=='ns1'&&status.role==='организатор')||(name==='Накладная склад №1 сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
 
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/ns1')
@@ -445,6 +460,7 @@ const MyDrawer = React.memo(
                                                                 getData({search: '', sort: '', page: 0, name: 'Накладная склад №1 сегодня'});
                                                                 setSelected(-1)
                                                             }
+                                                            collapse1('ns1');
 
                                                         }}>
                                                             <ListItemIcon><Receipt /></ListItemIcon>
@@ -458,7 +474,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{
+                                                        <ListItem className={(currentPath=='ns2'&&status.role==='организатор')||(name==='Накладная склад №2 сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
 
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/ns2')
@@ -469,6 +485,7 @@ const MyDrawer = React.memo(
                                                                 getData({search: '', sort: '', page: 0, name: 'Накладная склад №2 сегодня'});
                                                                 setSelected(-1)
                                                             }
+                                                            collapse1('ns2');
                                                         }}>
                                                             <ListItemIcon><Receipt /></ListItemIcon>
                                                             <ListItemText primary={'Накладная склад №2 сегодня'} />
@@ -481,7 +498,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{
+                                                        <ListItem className={(currentPath=='oo'&&status.role==='организатор')||(name==='Отчет организатора сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/oo')
                                                             } else {
@@ -490,6 +507,7 @@ const MyDrawer = React.memo(
                                                                 getData({search: '', sort: '', page: 0, name: 'Отчет организатора сегодня'});
                                                                 setSelected(-1)
                                                             }
+                                                            collapse1('oo');
                                                         }}>
                                                             <ListItemIcon><Receipt /></ListItemIcon>
                                                             <ListItemText primary={'Отчет организатора сегодня'} />
@@ -502,16 +520,18 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'реализатор', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{
+                                                        <ListItem className={(currentPath=='or'&&status.role==='реализатор')||(name==='Отчет реализатора сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
 
                                                             if(status.role==='реализатор') {
                                                                 props.history.push('/or')
+                                                                //collapse1('Отчет реализатора сегодня')
 
                                                             } else if(status.role==='организатор') {
                                                                 props.history.push('/');
                                                                 showDrawer(false);
                                                                 getData({search: '', sort: '', page: 0, name: 'Отчет реализатора сегодня', region: profile.guidRegion});
                                                                 setSelected(-1)
+                                                                //collapse1('Отчет реализатора сегодня')
                                                             } else
                                                                 collapse1('Отчет реализатора сегодня')
                                                         }}>
@@ -535,9 +555,9 @@ const MyDrawer = React.memo(
                                                                 </ListItem>
                                                                 <Divider variant='inset'/>
                                                                 {regionList!=undefined&&regionList.length>0?
-                                                                    (regionList).map((element)=>{
+                                                                    (regionList).map((element, idx)=>{
                                                                         return(
-                                                                            <>
+                                                                            <React.Fragment key={idx}>
                                                                             <ListItem className={selectedItem['Отчет реализатора сегодня'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={async()=>{
                                                                                 props.history.push('/');
                                                                                 showDrawer(false);
@@ -552,7 +572,7 @@ const MyDrawer = React.memo(
                                                                             <Divider variant='inset'/>
 
 
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     }):null}
                                                             </List>
@@ -609,9 +629,9 @@ const MyDrawer = React.memo(
                                                                 </ListItem>
                                                                 <Divider variant='inset'/>
                                                                 {regionList!=undefined&&regionList.length>0?
-                                                                    regionList.map((element)=>{
+                                                                    regionList.map((element, idx)=>{
                                                                         return(
-                                                                            <>
+                                                                            <React.Fragment key={idx}>
                                                                             <ListItem className={selectedItem['Накладная на вечерний возврат'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
                                                                                 props.history.push('/');
                                                                                 showDrawer(false);
@@ -623,7 +643,7 @@ const MyDrawer = React.memo(
                                                                                 <ListItemText primary={element.name} />
                                                                             </ListItem>
                                                                             <Divider variant='inset'/>
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     }):null}
                                                             </List>
@@ -665,9 +685,9 @@ const MyDrawer = React.memo(
                                                                 </ListItem>
                                                                 <Divider variant='inset'/>
                                                                 {regionList!=undefined&&regionList.length>0?
-                                                                    regionList.map((element)=>{
+                                                                    regionList.map((element, idx)=>{
                                                                         return(
-                                                                            <>
+                                                                            <React.Fragment key={idx}>
                                                                             <ListItem className={selectedItem['Накладная на пустую тару'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
                                                                                 props.history.push('/');
                                                                                 showDrawer(false);
@@ -679,7 +699,7 @@ const MyDrawer = React.memo(
                                                                                 <ListItemText primary={element.name} />
                                                                             </ListItem>
                                                                             <Divider variant='inset'/>
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     }):null}
                                                             </List>
@@ -721,9 +741,9 @@ const MyDrawer = React.memo(
                                                                 </ListItem>
                                                                 <Divider variant='inset'/>
                                                                 {regionList!=undefined&&regionList.length>0?
-                                                                    regionList.map((element)=>{
+                                                                    regionList.map((element, idx)=>{
                                                                         return(
-                                                                            <>
+                                                                            <React.Fragment key={idx}>
                                                                             <ListItem className={selectedItem['Накладная склад №1'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
                                                                                 props.history.push('/');
                                                                                 showDrawer(false);
@@ -735,7 +755,7 @@ const MyDrawer = React.memo(
                                                                                 <ListItemText primary={element.name} />
                                                                             </ListItem>
                                                                             <Divider variant='inset'/>
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     }):null}
                                                             </List>
@@ -776,9 +796,9 @@ const MyDrawer = React.memo(
                                                                 </ListItem>
                                                                 <Divider variant='inset'/>
                                                                 {regionList!=undefined&&regionList.length>0?
-                                                                    regionList.map((element)=>{
+                                                                    regionList.map((element, idx)=>{
                                                                         return(
-                                                                            <>
+                                                                            <React.Fragment key={idx}>
                                                                             <ListItem className={selectedItem['Накладная склад №2'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
                                                                                 props.history.push('/');
                                                                                 showDrawer(false);
@@ -790,7 +810,7 @@ const MyDrawer = React.memo(
                                                                                 <ListItemText primary={element.name} />
                                                                             </ListItem>
                                                                             <Divider variant='inset'/>
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     }):null}
                                                             </List>
@@ -830,9 +850,9 @@ const MyDrawer = React.memo(
                                                                 </ListItem>
                                                                 <Divider variant='inset'/>
                                                                 {regionList!=undefined&&regionList.length>0?
-                                                                    regionList.map((element)=>{
+                                                                    regionList.map((element, idx)=>{
                                                                         return(
-                                                                            <>
+                                                                            <React.Fragment key={idx}>
                                                                             <ListItem className={selectedItem['Отчет организатора'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={()=>{
                                                                                 props.history.push('/');
                                                                                 showDrawer(false);
@@ -844,7 +864,7 @@ const MyDrawer = React.memo(
                                                                                 <ListItemText primary={element.name} />
                                                                             </ListItem>
                                                                             <Divider variant='inset'/>
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     }):null}
                                                             </List>
@@ -894,9 +914,9 @@ const MyDrawer = React.memo(
                                                                 </ListItem>
                                                                 <Divider variant='inset'/>
                                                                 {(status.role==='организатор'?pointList[profile.guidRegion]:regionList)!=undefined&&(status.role==='организатор'?pointList[profile.guidRegion]:regionList).length>0?
-                                                                    (status.role==='организатор'?pointList[profile.guidRegion]:regionList).map((element)=>{
+                                                                    (status.role==='организатор'?pointList[profile.guidRegion]:regionList).map((element, idx)=>{
                                                                         return(
-                                                                            <>
+                                                                            <React.Fragment key={idx}>
                                                                             <ListItem className={selectedItem['Отчет реализатора'+element.guid]?classes.nested1SelectedItem:classes.nested1} button key={'event'} onClick={async()=>{
                                                                                 if(status.role==='организатор') {
                                                                                     props.history.push('/');
@@ -930,9 +950,9 @@ const MyDrawer = React.memo(
                                                                                         </ListItem>
                                                                                         <Divider variant='inset'/>
                                                                                         {pointList[selectedRegion]!=undefined&&pointList[selectedRegion].length>0?
-                                                                                            pointList[selectedRegion].map((element1)=>{
+                                                                                            pointList[selectedRegion].map((element1, idx)=>{
                                                                                                 return(
-                                                                                                    <>
+                                                                                                    <React.Fragment key={idx}>
                                                                                                     <ListItem className={selectedItem['Отчет реализатора'+element1.guid]?classes.nested2SelectedItem:classes.nested2} button key={'event'} onClick={()=>{
                                                                                                         props.history.push('/');
                                                                                                         showDrawer(false);
@@ -944,7 +964,7 @@ const MyDrawer = React.memo(
                                                                                                         <ListItemText primary={element1.name} />
                                                                                                     </ListItem>
                                                                                                     <Divider variant='inset'/>
-                                                                                                    </>
+                                                                                                    </React.Fragment>
                                                                                                 )
                                                                                             }):null}
                                                                                     </List>
@@ -953,7 +973,7 @@ const MyDrawer = React.memo(
                                                                                 null
                                                                             }
 
-                                                                            </>
+                                                                            </React.Fragment>
                                                                         )
                                                                     }):null}
                                                             </List>
@@ -982,7 +1002,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'организатор'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'План'}); setSelected(-1)}}>
+                                                        <ListItem className={name==='План'&&currentPath===''?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{collapse1('план');props.history.push('/');showDrawer(false); getData({search: '', sort: '', page: 0, name: 'План'}); setSelected(-1)}}>
                                                             <ListItemIcon><Event /></ListItemIcon>
                                                             <ListItemText primary={'План'} />
                                                         </ListItem>
@@ -994,7 +1014,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/statistic');showDrawer(false);setSelected(-1)}}>
+                                                        <ListItem className={currentPath==='statistic'?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{collapse1('статистика');props.history.push('/statistic');showDrawer(false);setSelected(-1)}}>
                                                             <ListItemIcon><Timeline /></ListItemIcon>
                                                             <ListItemText primary={'Статистика'} />
                                                         </ListItem>
@@ -1006,7 +1026,7 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'организатор'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/ro');showDrawer(false);setSelected(-1)}}>
+                                                        <ListItem className={currentPath==='ro'?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{collapse1('рейтингРегионов');props.history.push('/ro');showDrawer(false);setSelected(-1)}}>
                                                             <ListItemIcon><List1 /></ListItemIcon>
                                                             <ListItemText primary={'Рейтинг регионов'} />
                                                         </ListItem>
@@ -1018,9 +1038,21 @@ const MyDrawer = React.memo(
                                                 {
                                                     ['admin', 'организатор', 'реализатор'].includes(status.role)?
                                                         <>
-                                                        <ListItem className={classes.nested} button key={'event'} onClick={()=>{props.history.push('/rr');showDrawer(false);setSelected(-1)}}>
+                                                        <ListItem className={currentPath==='rr'?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{collapse1('рейтингТочек');props.history.push('/rr');showDrawer(false);setSelected(-1)}}>
                                                             <ListItemIcon><List1 /></ListItemIcon>
                                                             <ListItemText primary={'Рейтинг точек'} />
+                                                        </ListItem>
+                                                        <Divider variant='inset'/>
+                                                        </>
+                                                        :
+                                                        null
+                                                }
+                                                {
+                                                    ['admin', 'организатор', 'реализатор'].includes(status.role)?
+                                                        <>
+                                                        <ListItem className={currentPath==='geo'?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{collapse1('геолокация');props.history.push('/geo');showDrawer(false);setSelected(-1)}}>
+                                                            <ListItemIcon><GpsFixed/></ListItemIcon>
+                                                            <ListItemText primary={'Геолокация'} />
                                                         </ListItem>
                                                         <Divider variant='inset'/>
                                                         </>
@@ -1044,7 +1076,7 @@ const MyDrawer = React.memo(
                                         <Divider variant='inset'/>
                                         <Collapse in={secondMenuOpen['информация']} timeout='auto' unmountOnExit>
                                             <List component='div' disablePadding>
-                                                <ListItem className={classes.nested} button key={'event'} onClick={()=>{
+                                                <ListItem className={(name==='Блог'&&currentPath===''&&status.role==='admin')||currentPath=='blog'?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
                                                     if(status.role === 'admin') {
                                                         props.history.push('/');
                                                         getData({search: '', sort: '', page: 0, name: 'Блог'});
@@ -1052,6 +1084,7 @@ const MyDrawer = React.memo(
                                                         props.history.push('/blog');
                                                     }
                                                     showDrawer(false);
+                                                    collapse1('blog');
 
                                                     setSelected(-1);
                                                 }}>
@@ -1059,13 +1092,14 @@ const MyDrawer = React.memo(
                                                     <ListItemText primary={'Новости'} />
                                                 </ListItem>
                                                 <Divider variant='inset'/>
-                                                <ListItem className={classes.nested} button key={'event'} onClick={()=>{
+                                                <ListItem className={(name==='FAQ'&&currentPath===''&&status.role==='admin')||currentPath=='FAQ'?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
                                                     if(status.role === 'admin') {
                                                         props.history.push('/');
                                                         getData({search: '', sort: '', page: 0, name: 'FAQ'});
                                                     } else {
                                                         props.history.push('/FAQ');
                                                     }
+                                                    collapse1('FAQ');
                                                     showDrawer(false);
 
                                                     setSelected(-1);
@@ -1093,7 +1127,8 @@ const MyDrawer = React.memo(
 function mapStateToProps (state) {
     return {
         app: state.app,
-        user: state.user
+        user: state.user,
+        table: state.table
     }
 }
 
@@ -1101,7 +1136,6 @@ function mapDispatchToProps(dispatch) {
     return {
         appActions: bindActionCreators(appActions, dispatch),
         tableActions: bindActionCreators(tableActions, dispatch),
-        userActions: bindActionCreators(userActions, dispatch),
     }
 }
 

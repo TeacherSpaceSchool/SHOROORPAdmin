@@ -19,7 +19,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { DatePicker } from 'material-ui-pickers';
 export const datePicker = React.createRef();
 
-const width = mainWindow===undefined||mainWindow.current.offsetWidth>800? 500: 240;
 const width1 = mainWindow===undefined||mainWindow.current.offsetWidth>800? 240: 120;
 const styles = theme => ({
     button: {
@@ -30,34 +29,6 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: width1
-    },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: width,
-    },
-    urls: {
-        margin: theme.spacing.unit,
-        width: width,
-        maxHeight: 100,
-        overflow: 'auto'
-    },
-    message: {
-        width: width,
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-        marginLeft: 'calc((100% - '+width+'px)/2)',
-        marginRight: 'calc((100% - '+width+'px)/2)'
-    },
-    MuiPickersToolbar: {
-        toolbar: {
-            backgroundColor: '#000',
-        },
-    },
-    MuiPickersModal: {
-        dialogAction: {
-            color: '#000',
-        },
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
@@ -253,8 +224,8 @@ const Plan = React.memo(
                         </Typography>
                     </ExpansionPanelSummary>
                     {
-                        nakladnaya.m.data.map((element) => {return(
-                            <ExpansionPanelDetails style={{padding: '0px'}}>
+                        nakladnaya.m.data.map((element, idx) => {return(
+                            <ExpansionPanelDetails key={idx} style={{padding: '0px'}}>
                                 <center style={{width: '100%'}}>
                                     <div style={{marginRight: '10px', display: 'inline-block', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                         №:
@@ -305,7 +276,7 @@ const Plan = React.memo(
                     </ExpansionPanelSummary>
                     {
                         nakladnaya.k.data.map((element, idx) => {return(
-                            <ExpansionPanelDetails style={{padding: '0px'}}>
+                            <ExpansionPanelDetails key={idx} style={{padding: '0px'}}>
                                 <center style={{width: '100%'}}>
                                     <div style={{marginRight: '10px', display: 'inline-block', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                         №:

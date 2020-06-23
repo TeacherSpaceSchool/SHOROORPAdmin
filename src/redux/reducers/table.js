@@ -7,7 +7,9 @@ import {
     SET_DELETED_ID,
     SET_TYPE_STATISTIC,
     SET_SELECTED_POINT,
-    SET_SELECTED_REGION
+    SET_SELECTED_REGION,
+    SET_SELECTED_POINT_GEO,
+    SET_SELECTED_REGION_GEO
 } from '../constants/table'
 
 const initialState = {
@@ -26,6 +28,8 @@ const initialState = {
     oldFile: '',
     region: 'region',
     point: 'point',
+    regionGeo: {name: 'ВСЕ', guid: ''},
+    pointGeo: {name: 'ВСЕ', guid: ''},
     typeStatistic: {what: '', name: 'Выбрать'}
 }
 
@@ -99,6 +103,18 @@ export default function user(state = initialState, action) {
             return {
                 ...state,
                 region: action.payload,
+            };
+
+        case SET_SELECTED_POINT_GEO:
+            return {
+                ...state,
+                pointGeo: action.payload,
+            };
+
+        case SET_SELECTED_REGION_GEO:
+            return {
+                ...state,
+                regionGeo: action.payload,
             };
 
         default:

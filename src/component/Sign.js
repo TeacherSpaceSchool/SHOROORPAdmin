@@ -102,7 +102,6 @@ const Sign =  React.memo(
 
 function mapStateToProps (state) {
     return {
-        mini_dialog: state.mini_dialog,
         user: state.user,
     }
 }
