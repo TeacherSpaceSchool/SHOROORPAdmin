@@ -1607,14 +1607,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d3.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.i.l}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 'i', 'l')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.i.l}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -1622,14 +1615,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d3.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.i.b}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 'i', 'b')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.i.b}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
