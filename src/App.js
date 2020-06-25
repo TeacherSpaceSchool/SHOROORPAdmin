@@ -49,10 +49,10 @@ const App = (
             }
             fetchData();
         },[authenticated])
-        useEffect( ()=>{
+        /*useEffect( ()=>{
             if(status.role!==undefined&&status.role!=='admin')
                 props.history.push('/blog')
-        },[status])
+        },[status])*/
         return (
               <div ref={mainWindow} className='App'>
                   <Suspense fallback={null}>

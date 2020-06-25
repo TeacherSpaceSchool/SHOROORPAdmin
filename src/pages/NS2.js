@@ -199,7 +199,14 @@ const Plan = React.memo(
                 /*if(type === 's'){
                     nakladnaya[where][type]['sh02'] = checkInt(nakladnaya[where][type]['s02']) * 50 + checkInt(nakladnaya['vozvrat']['s']['s0502'])
                     nakladnaya[where][type]['sh04'] = checkInt(nakladnaya[where][type]['s04']) * 25 + checkInt(nakladnaya['vozvrat']['s']['s0504'])
-                } else */if(where==='vozvrat'&&type !== 's'){
+                } else *//*if(where==='vozvrat'&&type !== 's'){
+                    nakladnaya[where][type]['sh02'] = checkInt(nakladnaya[where][type]['s02']) * 50
+                    nakladnaya[where][type]['sh04'] = checkInt(nakladnaya[where][type]['s04']) * 25
+                }*/
+                if(type === 's'){
+                    nakladnaya[where][type]['sh02'] = checkInt(nakladnaya[where][type]['s02']) * 50 + checkInt(nakladnaya['vozvrat']['s']['s0502'])
+                    nakladnaya[where][type]['sh04'] = checkInt(nakladnaya[where][type]['s04']) * 25 + checkInt(nakladnaya['vozvrat']['s']['s0504'])
+                } else {
                     nakladnaya[where][type]['sh02'] = checkInt(nakladnaya[where][type]['s02']) * 50
                     nakladnaya[where][type]['sh04'] = checkInt(nakladnaya[where][type]['s04']) * 25
                 }
@@ -326,22 +333,34 @@ const Plan = React.memo(
                                 &nbsp;{nakladnaya.vydano.r.sh04}
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                &nbsp;{nakladnaya.vydano.r.l}
+                                <TextField
+                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.r.o}
+                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
+                                    type="number"
+                                    margin='normal'
+                                    value={nakladnaya.vydano.r.l}
+                                    onChange={(event)=>{handleLitr(event, 'vydano', 'r', 'l')}}
+                                />
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                &nbsp;{nakladnaya.vydano.r.b}
+                                <TextField
+                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.r.o}
+                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
+                                    type="number"
+                                    margin='normal'
+                                    value={nakladnaya.vydano.r.b}
+                                    onChange={(event)=>{handleLitr(event, 'vydano', 'r', 'b')}}
+                                />
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -462,25 +481,36 @@ const Plan = React.memo(
                                 &nbsp;{nakladnaya.vydano.d1.sh04}
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                &nbsp;{nakladnaya.vydano.d1.l}
+                                <TextField
+                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d1.o}
+                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
+                                    type="number"
+                                    margin='normal'
+                                    value={nakladnaya.vydano.d1.l}
+                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd1', 'l')}}
+                                />
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                &nbsp;{nakladnaya.vydano.d1.b}
+                                <TextField
+                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d1.o}
+                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
+                                    type="number"
+                                    margin='normal'
+                                    value={nakladnaya.vydano.d1.b}
+                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd1', 'b')}}
+                                />
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
@@ -600,22 +630,34 @@ const Plan = React.memo(
                                 &nbsp;{nakladnaya.vydano.d2.sh04}
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                &nbsp;{nakladnaya.vydano.d2.l}
+                                <TextField
+                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d2.o}
+                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
+                                    type="number"
+                                    margin='normal'
+                                    value={nakladnaya.vydano.d2.l}
+                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd2', 'l')}}
+                                />
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                &nbsp;{nakladnaya.vydano.d2.b}
+                                <TextField
+                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d2.o}
+                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
+                                    type="number"
+                                    margin='normal'
+                                    value={nakladnaya.vydano.d2.b}
+                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd2', 'b')}}
+                                />
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -736,22 +778,34 @@ const Plan = React.memo(
                                 &nbsp;{nakladnaya.vydano.d3.sh04}
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                &nbsp;{nakladnaya.vydano.d3.l}
+                                <TextField
+                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d3.o}
+                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
+                                    type="number"
+                                    margin='normal'
+                                    value={nakladnaya.vydano.d3.l}
+                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd3', 'l')}}
+                                />
                             </center>
                         </ExpansionPanelDetails>
-                        <br/>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
                             <center style={{width: '100%'}}>
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                &nbsp;{nakladnaya.vydano.d3.b}
+                                <TextField
+                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d3.o}
+                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
+                                    type="number"
+                                    margin='normal'
+                                    value={nakladnaya.vydano.d3.b}
+                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd3', 'b')}}
+                                />
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>

@@ -406,11 +406,11 @@ const MyDrawer = React.memo(
                                                     ['admin', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
                                                         <ListItem className={(currentPath=='nnvv'&&status.role==='организатор')||(name==='Накладная на вечерний возврат сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
+                                                            showDrawer(false);
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/nnvv')
                                                             } else {
                                                                 props.history.push('/');
-                                                                showDrawer(false);
                                                                 getData({search: '', sort: '', page: 0, name: 'Накладная на вечерний возврат сегодня'});
                                                                 setSelected(-1)
                                                             }
@@ -428,12 +428,11 @@ const MyDrawer = React.memo(
                                                     ['admin', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
                                                         <ListItem className={(currentPath=='nnpt'&&status.role==='организатор')||(name==='Накладная на пустую тару сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
-
+                                                            showDrawer(false);
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/nnpt')
                                                             } else {
                                                                 props.history.push('/');
-                                                                showDrawer(false);
                                                                 getData({search: '', sort: '', page: 0, name: 'Накладная на пустую тару сегодня'});
                                                                 setSelected(-1)
                                                             }
@@ -452,11 +451,11 @@ const MyDrawer = React.memo(
                                                         <>
                                                         <ListItem className={(currentPath=='ns1'&&status.role==='организатор')||(name==='Накладная склад №1 сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
 
+                                                            showDrawer(false);
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/ns1')
                                                             } else {
                                                                 props.history.push('/');
-                                                                showDrawer(false);
                                                                 getData({search: '', sort: '', page: 0, name: 'Накладная склад №1 сегодня'});
                                                                 setSelected(-1)
                                                             }
@@ -476,12 +475,12 @@ const MyDrawer = React.memo(
                                                         <>
                                                         <ListItem className={(currentPath=='ns2'&&status.role==='организатор')||(name==='Накладная склад №2 сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
 
+                                                            showDrawer(false);
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/ns2')
 
                                                             } else {
                                                                 props.history.push('/');
-                                                                showDrawer(false);
                                                                 getData({search: '', sort: '', page: 0, name: 'Накладная склад №2 сегодня'});
                                                                 setSelected(-1)
                                                             }
@@ -499,6 +498,7 @@ const MyDrawer = React.memo(
                                                     ['admin', 'организатор', 'завсклада'].includes(status.role)?
                                                         <>
                                                         <ListItem className={(currentPath=='oo'&&status.role==='организатор')||(name==='Отчет организатора сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
+                                                            showDrawer(false);
                                                             if(status.role==='организатор') {
                                                                 props.history.push('/oo')
                                                             } else {
@@ -507,7 +507,7 @@ const MyDrawer = React.memo(
                                                                 getData({search: '', sort: '', page: 0, name: 'Отчет организатора сегодня'});
                                                                 setSelected(-1)
                                                             }
-                                                            collapse1('oo');
+                                                            //collapse1('oo');
                                                         }}>
                                                             <ListItemIcon><Receipt /></ListItemIcon>
                                                             <ListItemText primary={'Отчет организатора сегодня'} />
@@ -523,6 +523,7 @@ const MyDrawer = React.memo(
                                                         <ListItem className={(currentPath=='or'&&status.role==='реализатор')||(name==='Отчет реализатора сегодня'&&currentPath==='')?classes.nestedSelectedItem:classes.nested} button key={'event'} onClick={()=>{
 
                                                             if(status.role==='реализатор') {
+                                                                showDrawer(false);
                                                                 props.history.push('/or')
                                                                 //collapse1('Отчет реализатора сегодня')
 

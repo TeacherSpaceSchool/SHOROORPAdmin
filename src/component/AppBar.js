@@ -159,7 +159,7 @@ const MyAppBar = React.memo(
                                                             showAddMiniDialog()
                                                     }}>Добавить</MenuItem>
                                                     :
-                                                    navigator.onLine && name!=='' && currentPath!=='blog' && currentPath!=='FAQ' && currentPath!=='plan' && currentPath!=='nnpt' && currentPath!=='nnvv' && currentPath!=='ns1' && currentPath!=='ns2' && currentPath!=='oo' && currentPath!=='or'  && ((name==='Отчет реализатора' && status.role==='организатор') || (name==='Отчет организатора' && status.role==='организатор') || (name==='Накладная на вечерний возврат' && status.role==='организатор') || (name==='Накладная склад №2' && status.role==='организатор') || (name==='Накладная склад №1' && status.role==='организатор') || (name==='Накладная на пустую тару' && status.role==='организатор')) ?
+                                                    navigator.onLine && name!=='' && currentPath!=='blog' && currentPath!=='FAQ' && currentPath!=='plan' && currentPath!=='nnpt' && currentPath!=='nnvv' && currentPath!=='ns1' && currentPath!=='ns2' && currentPath!=='oo' && currentPath!=='or'  && ((name==='Отчет реализатора' && status.role==='организатор') || (name==='Отчет организатора' && status.role==='организатор') || (name==='Накладная на вечерний возврат' && status.role==='организатор') || (name==='Накладная склад №2' && status.role==='организатор') || (name==='Накладная склад №1' && status.role==='организатор') || (name==='Накладная на пустую тару' && status.role==='организатор') || (name==='Отчет реализатора сегодня' && status.role==='организатор')) ?
                                                         <MenuItem onClick={()=>
                                                         {handleClose();
                                                             if(name==='Накладная на пустую тару')
@@ -172,7 +172,7 @@ const MyAppBar = React.memo(
                                                                 props.history.push('/nnvv')
                                                             else if(name==='Отчет организатора')
                                                                 props.history.push('/oo')
-                                                            else if(name==='Отчет реализатора')
+                                                            else if(name==='Отчет реализатора'||name==='Отчет реализатора сегодня')
                                                                 props.history.push('/or')
                                                             else
                                                                 showAddMiniDialog()

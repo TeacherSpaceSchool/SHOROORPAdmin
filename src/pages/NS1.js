@@ -49,8 +49,8 @@ const Plan = React.memo(
         useEffect( ()=>{
             async function fetchData() {
                 if (!(status.status==='active'&&['admin', 'организатор', 'завсклада'].includes(status.role))) {
-                props.history.push('/')
-            }
+                    props.history.push('/')
+                }
                 if(selected===-1) {
                     let _data = await tableActions.getDataSimple({name: 'ОрганизаторПоID'})
                     if(_data!==undefined){
@@ -364,7 +364,7 @@ const Plan = React.memo(
                 } else {
                     nakladnaya[where][type][what] = litr
                 }
-                if(type !== 's'&&where==='vozvrat'){
+                /*if(type !== 's'&&where==='vozvrat'){
                     nakladnaya[where][type]['ml'] = checkInt(nakladnaya[where][type]['m25']) * 24
                     nakladnaya[where][type]['chl'] = checkInt(nakladnaya[where][type]['ch25']) * 24 + checkInt(nakladnaya[where][type]['ch10']) * 10
                     nakladnaya[where][type]['kl'] = checkInt(nakladnaya[where][type]['k25']) * 24 + checkInt(nakladnaya[where][type]['k10']) * 10
@@ -373,6 +373,11 @@ const Plan = React.memo(
                     nakladnaya[where][type]['chl'] = checkInt(nakladnaya[where][type]['ch25']) * 24 + checkInt(nakladnaya[where][type]['ch10']) * 10
                     nakladnaya[where][type]['kl'] = checkInt(nakladnaya[where][type]['k25']) * 24 + checkInt(nakladnaya[where][type]['k10']) * 10
                 }*/
+                if(type !== 'n'){
+                    nakladnaya[where][type]['ml'] = checkInt(nakladnaya[where][type]['m25']) * 24
+                    nakladnaya[where][type]['chl'] = checkInt(nakladnaya[where][type]['ch25']) * 24 + checkInt(nakladnaya[where][type]['ch10']) * 10
+                    nakladnaya[where][type]['kl'] = checkInt(nakladnaya[where][type]['k25']) * 24 + checkInt(nakladnaya[where][type]['k10']) * 10
+                }
                 
                 let s = nakladnaya[where]['s']!==undefined?checkInt(nakladnaya[where]['s'][what]):0
                 nakladnaya[where]['i'][what] = checkInt(nakladnaya[where]['n'][what]) + checkInt(nakladnaya[where]['r'][what]) + checkInt(nakladnaya[where]['d1'][what]) + checkInt(nakladnaya[where]['d2'][what]) + checkInt(nakladnaya[where]['d3'][what]) + s

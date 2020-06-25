@@ -331,7 +331,7 @@ const Plan = React.memo(
                 },
                 'r': {
                     'otr': 0,
-                    'oo': 100,
+                    'oo': 200,
                     'ntp': 0,
                     'att': 0,
                     'at': '',
@@ -354,7 +354,7 @@ const Plan = React.memo(
                     's': '',
                     'lkm': '',
                 },
-                'i': -100,
+                'i': -200,
                 'm': false,
             };
             setId('')
@@ -567,7 +567,7 @@ const Plan = React.memo(
             },
             'r': {
                 'otr': 0,
-                'oo': 100,
+                'oo': 200,
                 'ntp': 0,
                 'att': 0,
                 'at': '',
@@ -590,7 +590,7 @@ const Plan = React.memo(
                 's': '',
                 'lkm': '',
             },
-            'i': -100,
+            'i': -200,
             'm': false,
         });
         let handleRashod =  (event, what) => {
