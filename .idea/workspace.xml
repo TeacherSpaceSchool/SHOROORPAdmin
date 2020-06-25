@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7632e864-3314-42a0-beaa-adf37cb4402a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/debug.log" afterPath="$PROJECT_DIR$/debug.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/App.js" afterPath="$PROJECT_DIR$/src/App.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/component/AppBar.js" afterPath="$PROJECT_DIR$/src/component/AppBar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/component/Drawer.js" afterPath="$PROJECT_DIR$/src/component/Drawer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pages/NS1.js" afterPath="$PROJECT_DIR$/src/pages/NS1.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pages/NS2.js" afterPath="$PROJECT_DIR$/src/pages/NS2.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pages/OO.js" afterPath="$PROJECT_DIR$/src/pages/OO.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pages/OR.js" afterPath="$PROJECT_DIR$/src/pages/OR.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -43,8 +36,8 @@
       <file leaf-file-name="NS2.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/NS2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="617">
-              <caret line="809" column="48" lean-forward="false" selection-start-line="809" selection-start-column="48" selection-end-line="809" selection-end-column="48" />
+            <state relative-caret-position="-1519">
+              <caret line="1896" column="44" lean-forward="false" selection-start-line="1896" selection-start-column="36" selection-end-line="1896" selection-end-column="44" />
               <folding>
                 <element signature="e#16114#26656#0" expanded="false" />
               </folding>
@@ -71,7 +64,6 @@
       <find>date: date</find>
       <find>map(</find>
       <find>checkInt(nakladnaya[where][type]['m25']) *</find>
-      <find>Легенда:</find>
       <find>Съем</find>
       <find>завсклада</find>
       <find>Завсклада</find>
@@ -93,6 +85,7 @@
       <find>collapse1</find>
       <find>selected</find>
       <find>['vydano']</find>
+      <find>Легенда:</find>
     </findStrings>
     <replaceStrings>
       <replace>s</replace>
@@ -359,8 +352,8 @@
     </list>
     <recent_temporary>
       <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="npm.build" />
-        <item index="1" class="java.lang.String" itemvalue="npm.start" />
+        <item index="0" class="java.lang.String" itemvalue="npm.start" />
+        <item index="1" class="java.lang.String" itemvalue="npm.build" />
         <item index="2" class="java.lang.String" itemvalue="Jest.App.test.js" />
         <item index="3" class="java.lang.String" itemvalue="npm.analyze" />
       </list>
@@ -591,7 +584,7 @@
       <workItem from="1592654150015" duration="13000" />
       <workItem from="1592654222466" duration="301000" />
       <workItem from="1592924599754" duration="2504000" />
-      <workItem from="1592940433623" duration="9243000" />
+      <workItem from="1592940433623" duration="10140000" />
     </task>
     <servers />
   </component>
@@ -604,7 +597,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1347382000" />
+    <option name="totallyTimeSpent" value="1348279000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -617,16 +610,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15716097" sideWeight="0.7068273" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15716097" sideWeight="0.7075307" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23149395" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23149395" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15716097" sideWeight="0.2931727" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15716097" sideWeight="0.29246935" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1049,8 +1043,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/NS2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="617">
-          <caret line="809" column="48" lean-forward="false" selection-start-line="809" selection-start-column="48" selection-end-line="809" selection-end-column="48" />
+        <state relative-caret-position="-1519">
+          <caret line="1896" column="44" lean-forward="false" selection-start-line="1896" selection-start-column="36" selection-end-line="1896" selection-end-column="44" />
           <folding>
             <element signature="e#16114#26656#0" expanded="false" />
           </folding>
