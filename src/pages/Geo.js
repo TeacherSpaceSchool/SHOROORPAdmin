@@ -56,14 +56,13 @@ const Plan = React.memo(
         const { regionGeo, pointGeo  } = props.table;
         const { status } = props.user;
         const { profile } = props.app;
-        let [date, setDate] = useState(new Date());
         let [list, setList] = useState([]);
         useEffect( ()=>{
             (async ()=> {
                 if((pointGeo.guid).length!==0&&(regionGeo.guid).length!==0){
-                    let data = await tableActions.getDataSimple({name: 'Геолокация', data: {date: (JSON.stringify(date)).split('T')[0], guidRegion: regionGeo.guid, guidPoint: pointGeo.guid}})
+                    let data = await tableActions.getDataSimple({name: 'Геолокация', data: {guidRegion: regionGeo.guid, guidPoint: pointGeo.guid}})
                     if(data.length===0){
-                        setList([{point: pointGeo.name, geo: '42.8700000, 74.5900000', region: regionGeo.name, guidPoint: pointGeo.guid, guidRegion: regionGeo.guid, date: (JSON.stringify(date)).split('T')[0]}])
+                        setList([{point: pointGeo.name, geo: '42.8700000, 74.5900000', region: regionGeo.name, guidPoint: pointGeo.guid, guidRegion: regionGeo.guid}])
                     }
                     else {
                         setList(data)
@@ -72,11 +71,11 @@ const Plan = React.memo(
                 else {
                     setList(await tableActions.getDataSimple({
                         name: 'Геолокация',
-                        data: {date: (JSON.stringify(date)).split('T')[0], guidRegion: regionGeo.guid, guidPoint: pointGeo.guid}
+                        data: {guidRegion: regionGeo.guid, guidPoint: pointGeo.guid}
                     }))
                 }
             })();
-        },[pointGeo, regionGeo, date])
+        },[pointGeo, regionGeo])
         useEffect( ()=>{
             (async ()=> {
                 if (!(status.status==='active'&&['admin', 'организатор', 'реализатор'].includes(status.role))) {
@@ -108,28 +107,20 @@ const Plan = React.memo(
         }
         let saveGeo = async(geo) => {
             setList(await tableActions.getDataSimple({name: 'ГеолокацияСохранить', data: {
-                point: pointGeo.name, geo: geo, region: regionGeo.name, date: (JSON.stringify(date)).split('T')[0], guidRegion: regionGeo.guid, guidPoint: pointGeo.guid}}))
+                point: pointGeo.name, geo: geo, region: regionGeo.name, guidRegion: regionGeo.guid, guidPoint: pointGeo.guid}}))
         }
         return (
              <YMaps>
                 <center>
                     <br/>
                     <h1>Геолокация</h1>
-                    <br/>
-                    <DatePicker
-                        views={['year', 'month', 'day']}
-                        label='Дата'
-                        className={classes.textField}
-                        value={date}
-                        onChange={setDate}
-                    />
-                    <br/>
                     <Button variant='outlined' onClick={()=>{if('admin'===status.role)showSelectRegion()}} className={classes.button}>
                         {regionGeo.name}
                     </Button>
                     <Button variant='outlined' onClick={()=>{if(['admin', 'организатор'].includes(status.role))showSelectPoint()}} className={classes.button}>
                         {pointGeo.name}
                     </Button>
+                    <br/>
                     <br/>
                     <Map height={size[1]} width={size[0]} defaultState={{ center: [42.8700000, 74.5900000], zoom: 12 }} >
                         {list!=undefined&&list.length>0?

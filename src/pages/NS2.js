@@ -75,6 +75,117 @@ const Plan = React.memo(
                             date = JSON.stringify(date).split('-')
                             date = date[2].split('T')[0]+' '+month[parseInt(date[1])-1]+' '+date[0].replace('"', '')
                             setDate(date)
+                            nakladnaya= {...nakladnaya}
+                            let _data1 = await tableActions.getDataSimple({
+                                name: 'Все отчеты реализаторов по дате',
+                                data: {data: date, organizator: _data.guid, region: _data.guidRegion}
+                            })
+                            if (_data1 != undefined) {
+
+                                nakladnaya['vydano']['r']['sh02'] = 0
+                                nakladnaya['vydano']['r']['sh04'] = 0
+                                nakladnaya['vydano']['r']['l'] = 0
+                                nakladnaya['vydano']['r']['b'] = 0
+
+                                nakladnaya['vydano']['d1']['sh02'] = 0
+                                nakladnaya['vydano']['d1']['sh04'] = 0
+                                nakladnaya['vydano']['d1']['l'] = 0
+                                nakladnaya['vydano']['d1']['b'] = 0
+
+                                nakladnaya['vydano']['d2']['sh02'] = 0
+                                nakladnaya['vydano']['d2']['sh04'] = 0
+                                nakladnaya['vydano']['d2']['l'] = 0
+                                nakladnaya['vydano']['d2']['b'] = 0
+
+                                nakladnaya['vydano']['d3']['sh02'] = 0
+                                nakladnaya['vydano']['d3']['sh04'] = 0
+                                nakladnaya['vydano']['d3']['l'] = 0
+                                nakladnaya['vydano']['d3']['b'] = 0
+
+                                nakladnaya['vozvrat']['s']['sh02'] = 0
+                                nakladnaya['vozvrat']['s']['sh04'] = 0
+                                nakladnaya['vozvrat']['s']['l'] = 0
+                                nakladnaya['vozvrat']['s']['b'] = 0
+
+                                for(let i = 0; i<_data1.length; i++){
+                                    let addDataTable = JSON.parse(_data1[i].dataTable)
+                                    if(checkInt(addDataTable.vozvrat.v.s02)>0) {
+                                        nakladnaya['vozvrat']['s']['sh02'] += checkInt(addDataTable.vozvrat.v.s02)
+                                    }
+                                    if(checkInt(addDataTable.vozvrat.v.s04)>0) {
+                                        nakladnaya['vozvrat']['s']['sh04'] += checkInt(addDataTable.vozvrat.v.s04)
+                                    }
+                                    if(checkInt(addDataTable.vozvrat.v.sl)>0) {
+                                        nakladnaya['vozvrat']['s']['l'] += checkInt(addDataTable.vozvrat.v.sl)
+                                    }
+                                    if(checkInt(addDataTable.vozvrat.v.b)>0) {
+                                        nakladnaya['vozvrat']['s']['b'] += checkInt(addDataTable.vozvrat.v.b)
+                                    }
+
+                                    if(checkInt(addDataTable.vydano.r.s02)>0) {
+                                        nakladnaya['vydano']['r']['sh02'] += checkInt(addDataTable.vydano.r.s02)
+                                    }
+                                    if(checkInt(addDataTable.vydano.r.s04)>0) {
+                                        nakladnaya['vydano']['r']['sh04'] += checkInt(addDataTable.vydano.r.s04)
+                                    }
+                                    if(checkInt(addDataTable.vydano.r.sl)>0) {
+                                        nakladnaya['vydano']['r']['l'] += checkInt(addDataTable.vydano.r.sl)
+                                    }
+                                    if(checkInt(addDataTable.vydano.r.b)>0) {
+                                        nakladnaya['vydano']['r']['b'] += checkInt(addDataTable.vydano.r.b)
+                                    }
+
+                                    if(checkInt(addDataTable.vydano.d1.s02)>0) {
+                                        nakladnaya['vydano']['d1']['sh02'] += checkInt(addDataTable.vydano.d1.s02)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d1.s04)>0) {
+                                        nakladnaya['vydano']['d1']['sh04'] += checkInt(addDataTable.vydano.d1.s04)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d1.sl)>0) {
+                                        nakladnaya['vydano']['d1']['l'] += checkInt(addDataTable.vydano.d1.sl)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d1.b)>0) {
+                                        nakladnaya['vydano']['d1']['b'] += checkInt(addDataTable.vydano.d1.b)
+                                    }
+
+                                    if(checkInt(addDataTable.vydano.d2.s02)>0) {
+                                        nakladnaya['vydano']['d2']['sh02'] += checkInt(addDataTable.vydano.d2.s02)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d2.s04)>0) {
+                                        nakladnaya['vydano']['d2']['sh04'] += checkInt(addDataTable.vydano.d2.s04)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d2.sl)>0) {
+                                        nakladnaya['vydano']['d2']['l'] += checkInt(addDataTable.vydano.d2.sl)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d2.b)>0) {
+                                        nakladnaya['vydano']['d2']['b'] += checkInt(addDataTable.vydano.d2.b)
+                                    }
+
+                                    if(checkInt(addDataTable.vydano.d3.s02)>0) {
+                                        nakladnaya['vydano']['d3']['sh02'] += checkInt(addDataTable.vydano.d3.s02)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d3.s04)>0) {
+                                        nakladnaya['vydano']['d3']['sh04'] += checkInt(addDataTable.vydano.d3.s04)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d3.sl)>0) {
+                                        nakladnaya['vydano']['d3']['l'] += checkInt(addDataTable.vydano.d3.sl)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d3.b)>0) {
+                                        nakladnaya['vydano']['d3']['b'] += checkInt(addDataTable.vydano.d3.b)
+                                    }
+                                }
+                                nakladnaya['vydano']['i']['sh02'] = checkInt(nakladnaya['vydano']['r']['sh02']) + checkInt(nakladnaya['vydano']['d1']['sh02']) + checkInt(nakladnaya['vydano']['d2']['sh02']) + checkInt(nakladnaya['vydano']['d3']['sh02'])
+                                nakladnaya['vydano']['i']['sh04'] = checkInt(nakladnaya['vydano']['r']['sh04']) + checkInt(nakladnaya['vydano']['d1']['sh04']) + checkInt(nakladnaya['vydano']['d2']['sh04']) + checkInt(nakladnaya['vydano']['d3']['sh04'])
+                                nakladnaya['vydano']['i']['l'] = checkInt(nakladnaya['vydano']['r']['l']) + checkInt(nakladnaya['vydano']['d1']['l']) + checkInt(nakladnaya['vydano']['d2']['l']) + checkInt(nakladnaya['vydano']['d3']['l'])
+                                nakladnaya['vydano']['i']['b'] = checkInt(nakladnaya['vydano']['r']['b']) + checkInt(nakladnaya['vydano']['d1']['b']) + checkInt(nakladnaya['vydano']['d2']['b']) + checkInt(nakladnaya['vydano']['d3']['b'])
+
+                                nakladnaya['vozvrat']['iv']['sh02'] = checkInt(nakladnaya['vozvrat']['i']['sh02']) + checkInt(nakladnaya['vozvrat']['v']['sh02']) + checkInt(nakladnaya['vozvrat']['s']['sh02'])
+                                nakladnaya['vozvrat']['iv']['sh04'] = checkInt(nakladnaya['vozvrat']['i']['sh04']) + checkInt(nakladnaya['vozvrat']['v']['sh04']) + checkInt(nakladnaya['vozvrat']['s']['sh04'])
+                                nakladnaya['vozvrat']['iv']['l'] = checkInt(nakladnaya['vozvrat']['i']['l']) + checkInt(nakladnaya['vozvrat']['v']['l']) + checkInt(nakladnaya['vozvrat']['s']['l'])
+                                nakladnaya['vozvrat']['iv']['b'] = checkInt(nakladnaya['vozvrat']['i']['b']) + checkInt(nakladnaya['vozvrat']['v']['b']) + checkInt(nakladnaya['vozvrat']['s']['b'])
+
+                            }
+                            setNakladnaya(nakladnaya)
                         }
                     }
                 }
@@ -151,6 +262,116 @@ const Plan = React.memo(
             date = JSON.stringify(date).split('-')
             date = date[2].split('T')[0]+' '+month[parseInt(date[1])-1]+' '+date[0].replace('"', '')
             setDate(date)
+
+            let _data1 = await tableActions.getDataSimple({
+                name: 'Все отчеты реализаторов по дате',
+                data: {data: date, organizator: guidOrganizator, region: guidRegion}
+            })
+            if (_data1 != undefined) {
+
+                nakladnaya['vydano']['r']['sh02'] = 0
+                nakladnaya['vydano']['r']['sh04'] = 0
+                nakladnaya['vydano']['r']['l'] = 0
+                nakladnaya['vydano']['r']['b'] = 0
+
+                nakladnaya['vydano']['d1']['sh02'] = 0
+                nakladnaya['vydano']['d1']['sh04'] = 0
+                nakladnaya['vydano']['d1']['l'] = 0
+                nakladnaya['vydano']['d1']['b'] = 0
+
+                nakladnaya['vydano']['d2']['sh02'] = 0
+                nakladnaya['vydano']['d2']['sh04'] = 0
+                nakladnaya['vydano']['d2']['l'] = 0
+                nakladnaya['vydano']['d2']['b'] = 0
+
+                nakladnaya['vydano']['d3']['sh02'] = 0
+                nakladnaya['vydano']['d3']['sh04'] = 0
+                nakladnaya['vydano']['d3']['l'] = 0
+                nakladnaya['vydano']['d3']['b'] = 0
+
+                nakladnaya['vozvrat']['s']['sh02'] = 0
+                nakladnaya['vozvrat']['s']['sh04'] = 0
+                nakladnaya['vozvrat']['s']['l'] = 0
+                nakladnaya['vozvrat']['s']['b'] = 0
+
+                for(let i = 0; i<_data1.length; i++){
+                    let addDataTable = JSON.parse(_data1[i].dataTable)
+                    if(checkInt(addDataTable.vozvrat.v.s02)>0) {
+                        nakladnaya['vozvrat']['s']['sh02'] += checkInt(addDataTable.vozvrat.v.s02)
+                    }
+                    if(checkInt(addDataTable.vozvrat.v.s04)>0) {
+                        nakladnaya['vozvrat']['s']['sh04'] += checkInt(addDataTable.vozvrat.v.s04)
+                    }
+                    if(checkInt(addDataTable.vozvrat.v.sl)>0) {
+                        nakladnaya['vozvrat']['s']['l'] += checkInt(addDataTable.vozvrat.v.sl)
+                    }
+                    if(checkInt(addDataTable.vozvrat.v.b)>0) {
+                        nakladnaya['vozvrat']['s']['b'] += checkInt(addDataTable.vozvrat.v.b)
+                    }
+
+                    if(checkInt(addDataTable.vydano.r.s02)>0) {
+                        nakladnaya['vydano']['r']['sh02'] += checkInt(addDataTable.vydano.r.s02)
+                    }
+                    if(checkInt(addDataTable.vydano.r.s04)>0) {
+                        nakladnaya['vydano']['r']['sh04'] += checkInt(addDataTable.vydano.r.s04)
+                    }
+                    if(checkInt(addDataTable.vydano.r.sl)>0) {
+                        nakladnaya['vydano']['r']['l'] += checkInt(addDataTable.vydano.r.sl)
+                    }
+                    if(checkInt(addDataTable.vydano.r.b)>0) {
+                        nakladnaya['vydano']['r']['b'] += checkInt(addDataTable.vydano.r.b)
+                    }
+
+                    if(checkInt(addDataTable.vydano.d1.s02)>0) {
+                        nakladnaya['vydano']['d1']['sh02'] += checkInt(addDataTable.vydano.d1.s02)
+                    }
+                    if(checkInt(addDataTable.vydano.d1.s04)>0) {
+                        nakladnaya['vydano']['d1']['sh04'] += checkInt(addDataTable.vydano.d1.s04)
+                    }
+                    if(checkInt(addDataTable.vydano.d1.sl)>0) {
+                        nakladnaya['vydano']['d1']['l'] += checkInt(addDataTable.vydano.d1.sl)
+                    }
+                    if(checkInt(addDataTable.vydano.d1.b)>0) {
+                        nakladnaya['vydano']['d1']['b'] += checkInt(addDataTable.vydano.d1.b)
+                    }
+
+                    if(checkInt(addDataTable.vydano.d2.s02)>0) {
+                        nakladnaya['vydano']['d2']['sh02'] += checkInt(addDataTable.vydano.d2.s02)
+                    }
+                    if(checkInt(addDataTable.vydano.d2.s04)>0) {
+                        nakladnaya['vydano']['d2']['sh04'] += checkInt(addDataTable.vydano.d2.s04)
+                    }
+                    if(checkInt(addDataTable.vydano.d2.sl)>0) {
+                        nakladnaya['vydano']['d2']['l'] += checkInt(addDataTable.vydano.d2.sl)
+                    }
+                    if(checkInt(addDataTable.vydano.d2.b)>0) {
+                        nakladnaya['vydano']['d2']['b'] += checkInt(addDataTable.vydano.d2.b)
+                    }
+
+                    if(checkInt(addDataTable.vydano.d3.s02)>0) {
+                        nakladnaya['vydano']['d3']['sh02'] += checkInt(addDataTable.vydano.d3.s02)
+                    }
+                    if(checkInt(addDataTable.vydano.d3.s04)>0) {
+                        nakladnaya['vydano']['d3']['sh04'] += checkInt(addDataTable.vydano.d3.s04)
+                    }
+                    if(checkInt(addDataTable.vydano.d3.sl)>0) {
+                        nakladnaya['vydano']['d3']['l'] += checkInt(addDataTable.vydano.d3.sl)
+                    }
+                    if(checkInt(addDataTable.vydano.d3.b)>0) {
+                        nakladnaya['vydano']['d3']['b'] += checkInt(addDataTable.vydano.d3.b)
+                    }
+                }
+                nakladnaya['vydano']['i']['sh02'] = checkInt(nakladnaya['vydano']['r']['sh02']) + checkInt(nakladnaya['vydano']['d1']['sh02']) + checkInt(nakladnaya['vydano']['d2']['sh02']) + checkInt(nakladnaya['vydano']['d3']['sh02'])
+                nakladnaya['vydano']['i']['sh04'] = checkInt(nakladnaya['vydano']['r']['sh04']) + checkInt(nakladnaya['vydano']['d1']['sh04']) + checkInt(nakladnaya['vydano']['d2']['sh04']) + checkInt(nakladnaya['vydano']['d3']['sh04'])
+                nakladnaya['vydano']['i']['l'] = checkInt(nakladnaya['vydano']['r']['l']) + checkInt(nakladnaya['vydano']['d1']['l']) + checkInt(nakladnaya['vydano']['d2']['l']) + checkInt(nakladnaya['vydano']['d3']['l'])
+                nakladnaya['vydano']['i']['b'] = checkInt(nakladnaya['vydano']['r']['b']) + checkInt(nakladnaya['vydano']['d1']['b']) + checkInt(nakladnaya['vydano']['d2']['b']) + checkInt(nakladnaya['vydano']['d3']['b'])
+
+                nakladnaya['vozvrat']['iv']['sh02'] = checkInt(nakladnaya['vozvrat']['i']['sh02']) + checkInt(nakladnaya['vozvrat']['v']['sh02']) + checkInt(nakladnaya['vozvrat']['s']['sh02'])
+                nakladnaya['vozvrat']['iv']['sh04'] = checkInt(nakladnaya['vozvrat']['i']['sh04']) + checkInt(nakladnaya['vozvrat']['v']['sh04']) + checkInt(nakladnaya['vozvrat']['s']['sh04'])
+                nakladnaya['vozvrat']['iv']['l'] = checkInt(nakladnaya['vozvrat']['i']['l']) + checkInt(nakladnaya['vozvrat']['v']['l']) + checkInt(nakladnaya['vozvrat']['s']['l'])
+                nakladnaya['vozvrat']['iv']['b'] = checkInt(nakladnaya['vozvrat']['i']['b']) + checkInt(nakladnaya['vozvrat']['v']['b']) + checkInt(nakladnaya['vozvrat']['s']['b'])
+
+            }
         };
         let [disabled, setDisabled] = useState(false);
         let [id, setId] = useState('');
@@ -199,14 +420,7 @@ const Plan = React.memo(
                 /*if(type === 's'){
                     nakladnaya[where][type]['sh02'] = checkInt(nakladnaya[where][type]['s02']) * 50 + checkInt(nakladnaya['vozvrat']['s']['s0502'])
                     nakladnaya[where][type]['sh04'] = checkInt(nakladnaya[where][type]['s04']) * 25 + checkInt(nakladnaya['vozvrat']['s']['s0504'])
-                } else *//*if(where==='vozvrat'&&type !== 's'){
-                    nakladnaya[where][type]['sh02'] = checkInt(nakladnaya[where][type]['s02']) * 50
-                    nakladnaya[where][type]['sh04'] = checkInt(nakladnaya[where][type]['s04']) * 25
-                }*/
-                if(type === 's'){
-                    nakladnaya[where][type]['sh02'] = checkInt(nakladnaya[where][type]['s02']) * 50 + checkInt(nakladnaya['vozvrat']['s']['s0502'])
-                    nakladnaya[where][type]['sh04'] = checkInt(nakladnaya[where][type]['s04']) * 25 + checkInt(nakladnaya['vozvrat']['s']['s0504'])
-                } else {
+                } else */if(where==='vozvrat'&&type !== 's'){
                     nakladnaya[where][type]['sh02'] = checkInt(nakladnaya[where][type]['s02']) * 50
                     nakladnaya[where][type]['sh04'] = checkInt(nakladnaya[where][type]['s04']) * 25
                 }
@@ -338,14 +552,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.r.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vydano.r.l}
-                                    onChange={(event)=>{handleLitr(event, 'vydano', 'r', 'l')}}
-                                />
+                                &nbsp;{nakladnaya.vydano.r.l}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -353,14 +560,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.r.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vydano.r.b}
-                                    onChange={(event)=>{handleLitr(event, 'vydano', 'r', 'b')}}
-                                />
+                                &nbsp;{nakladnaya.vydano.r.b}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -486,14 +686,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d1.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vydano.d1.l}
-                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd1', 'l')}}
-                                />
+                                &nbsp;{nakladnaya.vydano.d1.l}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -501,14 +694,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d1.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vydano.d1.b}
-                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd1', 'b')}}
-                                />
+                                &nbsp;{nakladnaya.vydano.d1.b}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -635,14 +821,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d2.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vydano.d2.l}
-                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd2', 'l')}}
-                                />
+                                &nbsp;{nakladnaya.vydano.d2.l}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -650,14 +829,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d2.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vydano.d2.b}
-                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd2', 'b')}}
-                                />
+                                &nbsp;{nakladnaya.vydano.d2.b}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -783,14 +955,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Легенда:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d3.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vydano.d3.l}
-                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd3', 'l')}}
-                                />
+                                &nbsp;{nakladnaya.vydano.d3.l}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -798,14 +963,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Бутылки:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vydano.d3.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vydano.d3.b}
-                                    onChange={(event)=>{handleLitr(event, 'vydano', 'd3', 'b')}}
-                                />
+                                &nbsp;{nakladnaya.vydano.d3.b}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>

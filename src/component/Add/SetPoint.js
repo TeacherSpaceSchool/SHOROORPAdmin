@@ -46,7 +46,6 @@ const Sign =  React.memo(
         useEffect(()=>{
             async function fetchData() {
                 let data = [];
-                console.log(regionGeo)
                 let _data = await tableActions.getDataSimple({name: 'ТочкаПоРегиону', data: {region: regionGeo.guid}})
                 if (_data!==undefined) {
                     data = _data

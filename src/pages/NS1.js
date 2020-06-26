@@ -48,9 +48,9 @@ const Plan = React.memo(
     (props) =>{
         useEffect( ()=>{
             async function fetchData() {
-                if (!(status.status==='active'&&['admin', 'организатор', 'завсклада'].includes(status.role))) {
+                /*if (!(status.status==='active'&&['admin', 'организатор', 'завсклада'].includes(status.role))) {
                     props.history.push('/')
-                }
+                }*/
                 if(selected===-1) {
                     let _data = await tableActions.getDataSimple({name: 'ОрганизаторПоID'})
                     if(_data!==undefined){
@@ -77,51 +77,148 @@ const Plan = React.memo(
                             date = JSON.stringify(date).split('-')
                             date = date[2].split('T')[0]+' '+month[parseInt(date[1])-1]+' '+date[0].replace('"', '')
                             setDate(date)
-
+                            nakladnaya = {...nakladnaya}
                             let _data1 = await tableActions.getDataSimple({
                                 name: 'Все отчеты реализаторов по дате',
-                                data: {data: date, organizator: _data.name, region: _data.guidRegion}
+                                data: {data: date, organizator: _data.guid, region: _data.guidRegion}
                             })
                             if (_data1 != undefined) {
+
+                                nakladnaya['vydano']['r']['ml'] = 0
+                                nakladnaya['vydano']['r']['chl'] = 0
+                                nakladnaya['vydano']['r']['kl'] = 0
+
+                                nakladnaya['vydano']['d1']['ml'] = 0
+                                nakladnaya['vydano']['d1']['chl'] = 0
+                                nakladnaya['vydano']['d1']['kl'] = 0
+
+                                nakladnaya['vydano']['d2']['ml'] = 0
+                                nakladnaya['vydano']['d2']['chl'] = 0
+                                nakladnaya['vydano']['d2']['kl'] = 0
+
+                                nakladnaya['vydano']['d3']['ml'] = 0
+                                nakladnaya['vydano']['d3']['chl'] = 0
+                                nakladnaya['vydano']['d3']['kl'] = 0
+
                                 nakladnaya['vozvrat']['n']['ch25'] = 0
                                 nakladnaya['vozvrat']['n']['ch10'] = 0
                                 nakladnaya['vozvrat']['n']['chl'] = 0
 
+                                nakladnaya['vozvrat']['s']['ml'] = 0
+                                nakladnaya['vozvrat']['s']['chl'] = 0
+                                nakladnaya['vozvrat']['s']['kl'] = 0
+                                nakladnaya['vozvrat']['s']['m25'] = 0
+                                nakladnaya['vozvrat']['s']['ch25'] = 0
+                                nakladnaya['vozvrat']['s']['ch10'] = 0
+                                nakladnaya['vozvrat']['s']['k10'] = 0
+
                                 for(let i = 0; i<_data1.length; i++){
                                     let addDataTable = JSON.parse(_data1[i].dataTable)
                                     if(checkInt(addDataTable.vozvrat.v.chl)>0){
+                                        nakladnaya['vozvrat']['s']['chl'] += checkInt(addDataTable.vozvrat.v.chl)
                                         nakladnaya['vozvrat']['n']['chl'] += checkInt(addDataTable.vozvrat.v.chl)
                                         if(addDataTable.vozvrat.v.chn25.length>0){
                                             nakladnaya['vozvrat']['n']['ch25'] += 1
-
+                                            nakladnaya['vozvrat']['s']['ch25'] += 1
                                         }
                                         if(addDataTable.vozvrat.v.chn10.length>0){
                                             nakladnaya['vozvrat']['n']['ch10'] += 1
-
+                                            nakladnaya['vozvrat']['s']['ch10'] += 1
                                         }
                                     }
                                     if(checkInt(addDataTable.vozvrat.v.chl1)>0){
+                                        nakladnaya['vozvrat']['s']['chl'] += checkInt(addDataTable.vozvrat.v.chl1)
                                         nakladnaya['vozvrat']['n']['chl'] += checkInt(addDataTable.vozvrat.v.chl1)
                                         if(addDataTable.vozvrat.v.chn251.length>0){
                                             nakladnaya['vozvrat']['n']['ch25'] += 1
-
+                                            nakladnaya['vozvrat']['s']['ch25'] += 1
                                         }
                                         if(addDataTable.vozvrat.v.chn101.length>0){
                                             nakladnaya['vozvrat']['n']['ch10'] += 1
-
+                                            nakladnaya['vozvrat']['s']['ch10'] += 1
                                         }
                                     }
+                                    if(checkInt(addDataTable.vozvrat.v.ml)>0) {
+                                        nakladnaya['vozvrat']['s']['ml'] += checkInt(addDataTable.vozvrat.v.ml)
+                                        if(addDataTable.vozvrat.v.mn.length>0){
+                                            nakladnaya['vozvrat']['s']['m25'] += 1
+                                        }
+                                    }
+                                    if(checkInt(addDataTable.vozvrat.v.ml1)>0) {
+                                        nakladnaya['vozvrat']['s']['ml'] += checkInt(addDataTable.vozvrat.v.ml1)
+                                        if(addDataTable.vozvrat.v.mn1.length>0){
+                                            nakladnaya['vozvrat']['s']['m25'] += 1
+                                        }
+                                    }
+                                    if(checkInt(addDataTable.vozvrat.v.kl)>0) {
+                                        nakladnaya['vozvrat']['s']['kl'] += checkInt(addDataTable.vozvrat.v.kl)
+                                        if(addDataTable.vozvrat.v.kn.length>0){
+                                            nakladnaya['vozvrat']['s']['k10'] += 1
+                                        }
+                                    }
+                                    if(checkInt(addDataTable.vozvrat.v.kl1)>0) {
+                                        nakladnaya['vozvrat']['s']['kl'] += checkInt(addDataTable.vozvrat.v.kl1)
+                                        if(addDataTable.vozvrat.v.kn1.length>0){
+                                            nakladnaya['vozvrat']['s']['k10'] += 1
+                                        }
+                                    }
+
+                                    if(checkInt(addDataTable.vydano.r.ml)>0) {
+                                        nakladnaya['vydano']['r']['ml'] += checkInt(addDataTable.vydano.r.ml)
+                                    }
+                                    if(checkInt(addDataTable.vydano.r.chl)>0) {
+                                        nakladnaya['vydano']['r']['chl'] += checkInt(addDataTable.vydano.r.chl)
+                                    }
+                                    if(checkInt(addDataTable.vydano.r.kl)>0) {
+                                        nakladnaya['vydano']['r']['kl'] += checkInt(addDataTable.vydano.r.kl)
+                                    }
+
+                                    if(checkInt(addDataTable.vydano.d1.ml)>0) {
+                                        nakladnaya['vydano']['d1']['ml'] += checkInt(addDataTable.vydano.d1.ml)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d1.chl)>0) {
+                                        nakladnaya['vydano']['d1']['chl'] += checkInt(addDataTable.vydano.d1.chl)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d1.kl)>0) {
+                                        nakladnaya['vydano']['d1']['kl'] += checkInt(addDataTable.vydano.d1.kl)
+                                    }
+
+                                    if(checkInt(addDataTable.vydano.d2.ml)>0) {
+                                        nakladnaya['vydano']['d2']['ml'] += checkInt(addDataTable.vydano.d2.ml)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d2.chl)>0) {
+                                        nakladnaya['vydano']['d2']['chl'] += checkInt(addDataTable.vydano.d2.chl)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d2.kl)>0) {
+                                        nakladnaya['vydano']['d2']['kl'] += checkInt(addDataTable.vydano.d2.kl)
+                                    }
+
+                                    if(checkInt(addDataTable.vydano.d3.ml)>0) {
+                                        nakladnaya['vydano']['d3']['ml'] += checkInt(addDataTable.vydano.d3.ml)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d3.chl)>0) {
+                                        nakladnaya['vydano']['d3']['chl'] += checkInt(addDataTable.vydano.d3.chl)
+                                    }
+                                    if(checkInt(addDataTable.vydano.d3.kl)>0) {
+                                        nakladnaya['vydano']['d3']['kl'] += checkInt(addDataTable.vydano.d3.kl)
+                                    }
                                 }
-                                nakladnaya['vozvrat']['i']['chl'] = checkInt(nakladnaya['vozvrat']['n']['chl']) + checkInt(nakladnaya['vozvrat']['r']['chl']) + checkInt(nakladnaya['vozvrat']['d1']['chl']) + checkInt(nakladnaya['vozvrat']['d2']['chl']) + checkInt(nakladnaya['vozvrat']['d3']['chl']) + checkInt(nakladnaya['vozvrat']['s']['chl'])
-                                nakladnaya['vozvrat']['i']['ch10'] = checkInt(nakladnaya['vozvrat']['n']['ch10']) + checkInt(nakladnaya['vozvrat']['r']['ch10']) + checkInt(nakladnaya['vozvrat']['d1']['ch10']) + checkInt(nakladnaya['vozvrat']['d2']['ch10']) + checkInt(nakladnaya['vozvrat']['d3']['ch10']) + checkInt(nakladnaya['vozvrat']['s']['ch10'])
-                                nakladnaya['vozvrat']['i']['ch25'] = checkInt(nakladnaya['vozvrat']['n']['ch25']) + checkInt(nakladnaya['vozvrat']['r']['ch25']) + checkInt(nakladnaya['vozvrat']['d1']['ch25']) + checkInt(nakladnaya['vozvrat']['d2']['ch25']) + checkInt(nakladnaya['vozvrat']['d3']['ch25']) + checkInt(nakladnaya['vozvrat']['s']['ch25'])
+                                nakladnaya['vydano']['i']['ml'] = checkInt(nakladnaya['vydano']['n']['ml']) + checkInt(nakladnaya['vydano']['r']['ml']) + checkInt(nakladnaya['vydano']['d1']['ml']) + checkInt(nakladnaya['vydano']['d2']['ml']) + checkInt(nakladnaya['vydano']['d3']['ml'])
+                                nakladnaya['vydano']['i']['kl'] = checkInt(nakladnaya['vydano']['n']['kl']) + checkInt(nakladnaya['vydano']['r']['kl']) + checkInt(nakladnaya['vydano']['d1']['kl']) + checkInt(nakladnaya['vydano']['d2']['kl']) + checkInt(nakladnaya['vydano']['d3']['kl'])
+                                nakladnaya['vydano']['i']['chl'] = checkInt(nakladnaya['vydano']['n']['chl']) + checkInt(nakladnaya['vydano']['r']['chl']) + checkInt(nakladnaya['vydano']['d1']['chl']) + checkInt(nakladnaya['vydano']['d2']['chl']) + checkInt(nakladnaya['vydano']['d3']['chl'])
+                                nakladnaya['vozvrat']['i']['ml'] = checkInt(nakladnaya['vozvrat']['s']['ml']) + checkInt(nakladnaya['vozvrat']['n']['ml']) + checkInt(nakladnaya['vozvrat']['r']['ml']) + checkInt(nakladnaya['vozvrat']['d1']['ml']) + checkInt(nakladnaya['vozvrat']['d2']['ml']) + checkInt(nakladnaya['vozvrat']['d3']['ml'])
+                                nakladnaya['vozvrat']['i']['kl'] = checkInt(nakladnaya['vozvrat']['s']['kl']) + checkInt(nakladnaya['vozvrat']['n']['kl']) + checkInt(nakladnaya['vozvrat']['r']['kl']) + checkInt(nakladnaya['vozvrat']['d1']['kl']) + checkInt(nakladnaya['vozvrat']['d2']['kl']) + checkInt(nakladnaya['vozvrat']['d3']['kl'])
+                                nakladnaya['vozvrat']['i']['chl'] = checkInt(nakladnaya['vozvrat']['r']['chl']) + checkInt(nakladnaya['vozvrat']['d1']['chl']) + checkInt(nakladnaya['vozvrat']['d2']['chl']) + checkInt(nakladnaya['vozvrat']['d3']['chl']) + checkInt(nakladnaya['vozvrat']['s']['chl'])
+                                nakladnaya['vozvrat']['i']['ch10'] = checkInt(nakladnaya['vozvrat']['r']['ch10']) + checkInt(nakladnaya['vozvrat']['d1']['ch10']) + checkInt(nakladnaya['vozvrat']['d2']['ch10']) + checkInt(nakladnaya['vozvrat']['d3']['ch10']) + checkInt(nakladnaya['vozvrat']['s']['ch10'])
+                                nakladnaya['vozvrat']['i']['ch25'] = checkInt(nakladnaya['vozvrat']['r']['ch25']) + checkInt(nakladnaya['vozvrat']['d1']['ch25']) + checkInt(nakladnaya['vozvrat']['d2']['ch25']) + checkInt(nakladnaya['vozvrat']['d3']['ch25']) + checkInt(nakladnaya['vozvrat']['s']['ch25'])
+
 
                             }
 
                             date = getYesterday(date)
                             _data1 = await tableActions.getDataSimple({
                                 name: 'Все отчеты реализаторов по дате',
-                                data: {data: date, organizator: _data.name, region: _data.guidRegion}
+                                data: {data: date, organizator: _data.guid, region: _data.guidRegion}
                             })
                             if (_data1 != undefined) {
                                 nakladnaya['vydano']['n']['ch25'] = 0
@@ -240,38 +337,134 @@ const Plan = React.memo(
                 data: {data: date, organizator: guidOrganizator, region: guidRegion}
             })
             if (_data1 != undefined) {
+
+                nakladnaya['vydano']['r']['ml'] = 0
+                nakladnaya['vydano']['r']['chl'] = 0
+                nakladnaya['vydano']['r']['kl'] = 0
+
+                nakladnaya['vydano']['d1']['ml'] = 0
+                nakladnaya['vydano']['d1']['chl'] = 0
+                nakladnaya['vydano']['d1']['kl'] = 0
+
+                nakladnaya['vydano']['d2']['ml'] = 0
+                nakladnaya['vydano']['d2']['chl'] = 0
+                nakladnaya['vydano']['d2']['kl'] = 0
+
+                nakladnaya['vydano']['d3']['ml'] = 0
+                nakladnaya['vydano']['d3']['chl'] = 0
+                nakladnaya['vydano']['d3']['kl'] = 0
+
                 nakladnaya['vozvrat']['n']['ch25'] = 0
                 nakladnaya['vozvrat']['n']['ch10'] = 0
                 nakladnaya['vozvrat']['n']['chl'] = 0
 
+                nakladnaya['vozvrat']['s']['ml'] = 0
+                nakladnaya['vozvrat']['s']['chl'] = 0
+                nakladnaya['vozvrat']['s']['kl'] = 0
+                nakladnaya['vozvrat']['s']['m25'] = 0
+                nakladnaya['vozvrat']['s']['ch25'] = 0
+                nakladnaya['vozvrat']['s']['ch10'] = 0
+                nakladnaya['vozvrat']['s']['k10'] = 0
+
                 for(let i = 0; i<_data1.length; i++){
                     let addDataTable = JSON.parse(_data1[i].dataTable)
                     if(checkInt(addDataTable.vozvrat.v.chl)>0){
+                        nakladnaya['vozvrat']['s']['chl'] += checkInt(addDataTable.vozvrat.v.chl)
                         nakladnaya['vozvrat']['n']['chl'] += checkInt(addDataTable.vozvrat.v.chl)
                         if(addDataTable.vozvrat.v.chn25.length>0){
                             nakladnaya['vozvrat']['n']['ch25'] += 1
-
+                            nakladnaya['vozvrat']['s']['ch25'] += 1
                         }
                         if(addDataTable.vozvrat.v.chn10.length>0){
                             nakladnaya['vozvrat']['n']['ch10'] += 1
-
+                            nakladnaya['vozvrat']['s']['ch10'] += 1
                         }
                     }
                     if(checkInt(addDataTable.vozvrat.v.chl1)>0){
+                        nakladnaya['vozvrat']['s']['chl'] += checkInt(addDataTable.vozvrat.v.chl1)
                         nakladnaya['vozvrat']['n']['chl'] += checkInt(addDataTable.vozvrat.v.chl1)
                         if(addDataTable.vozvrat.v.chn251.length>0){
                             nakladnaya['vozvrat']['n']['ch25'] += 1
-
+                            nakladnaya['vozvrat']['s']['ch25'] += 1
                         }
                         if(addDataTable.vozvrat.v.chn101.length>0){
                             nakladnaya['vozvrat']['n']['ch10'] += 1
-
+                            nakladnaya['vozvrat']['s']['ch10'] += 1
                         }
                     }
+                    if(checkInt(addDataTable.vozvrat.v.ml)>0) {
+                        nakladnaya['vozvrat']['s']['ml'] += checkInt(addDataTable.vozvrat.v.ml)
+                        if(addDataTable.vozvrat.v.mn.length>0){
+                            nakladnaya['vozvrat']['s']['m25'] += 1
+                        }
+                    }
+                    if(checkInt(addDataTable.vozvrat.v.ml1)>0) {
+                        nakladnaya['vozvrat']['s']['ml'] += checkInt(addDataTable.vozvrat.v.ml1)
+                        if(addDataTable.vozvrat.v.mn1.length>0){
+                            nakladnaya['vozvrat']['s']['m25'] += 1
+                        }
+                    }
+                    if(checkInt(addDataTable.vozvrat.v.kl)>0) {
+                        nakladnaya['vozvrat']['s']['kl'] += checkInt(addDataTable.vozvrat.v.kl)
+                        if(addDataTable.vozvrat.v.kn.length>0){
+                            nakladnaya['vozvrat']['s']['k10'] += 1
+                        }
+                    }
+                    if(checkInt(addDataTable.vozvrat.v.kl1)>0) {
+                        nakladnaya['vozvrat']['s']['kl'] += checkInt(addDataTable.vozvrat.v.kl1)
+                        if(addDataTable.vozvrat.v.kn1.length>0){
+                            nakladnaya['vozvrat']['s']['k10'] += 1
+                        }
+                    }
+
+                    if(checkInt(addDataTable.vydano.r.ml)>0) {
+                        nakladnaya['vydano']['r']['ml'] += checkInt(addDataTable.vydano.r.ml)
+                    }
+                    if(checkInt(addDataTable.vydano.r.chl)>0) {
+                        nakladnaya['vydano']['r']['chl'] += checkInt(addDataTable.vydano.r.chl)
+                    }
+                    if(checkInt(addDataTable.vydano.r.kl)>0) {
+                        nakladnaya['vydano']['r']['kl'] += checkInt(addDataTable.vydano.r.kl)
+                    }
+
+                    if(checkInt(addDataTable.vydano.d1.ml)>0) {
+                        nakladnaya['vydano']['d1']['ml'] += checkInt(addDataTable.vydano.d1.ml)
+                    }
+                    if(checkInt(addDataTable.vydano.d1.chl)>0) {
+                        nakladnaya['vydano']['d1']['chl'] += checkInt(addDataTable.vydano.d1.chl)
+                    }
+                    if(checkInt(addDataTable.vydano.d1.kl)>0) {
+                        nakladnaya['vydano']['d1']['kl'] += checkInt(addDataTable.vydano.d1.kl)
+                    }
+
+                    if(checkInt(addDataTable.vydano.d2.ml)>0) {
+                        nakladnaya['vydano']['d2']['ml'] += checkInt(addDataTable.vydano.d2.ml)
+                    }
+                    if(checkInt(addDataTable.vydano.d2.chl)>0) {
+                        nakladnaya['vydano']['d2']['chl'] += checkInt(addDataTable.vydano.d2.chl)
+                    }
+                    if(checkInt(addDataTable.vydano.d2.kl)>0) {
+                        nakladnaya['vydano']['d2']['kl'] += checkInt(addDataTable.vydano.d2.kl)
+                    }
+
+                    if(checkInt(addDataTable.vydano.d3.ml)>0) {
+                        nakladnaya['vydano']['d3']['ml'] += checkInt(addDataTable.vydano.d3.ml)
+                    }
+                    if(checkInt(addDataTable.vydano.d3.chl)>0) {
+                        nakladnaya['vydano']['d3']['chl'] += checkInt(addDataTable.vydano.d3.chl)
+                    }
+                    if(checkInt(addDataTable.vydano.d3.kl)>0) {
+                        nakladnaya['vydano']['d3']['kl'] += checkInt(addDataTable.vydano.d3.kl)
+                    }
                 }
-                nakladnaya['vozvrat']['i']['chl'] = checkInt(nakladnaya['vozvrat']['n']['chl']) + checkInt(nakladnaya['vozvrat']['r']['chl']) + checkInt(nakladnaya['vozvrat']['d1']['chl']) + checkInt(nakladnaya['vozvrat']['d2']['chl']) + checkInt(nakladnaya['vozvrat']['d3']['chl']) + checkInt(nakladnaya['vozvrat']['s']['chl'])
-                nakladnaya['vozvrat']['i']['ch10'] = checkInt(nakladnaya['vozvrat']['n']['ch10']) + checkInt(nakladnaya['vozvrat']['r']['ch10']) + checkInt(nakladnaya['vozvrat']['d1']['ch10']) + checkInt(nakladnaya['vozvrat']['d2']['ch10']) + checkInt(nakladnaya['vozvrat']['d3']['ch10']) + checkInt(nakladnaya['vozvrat']['s']['ch10'])
-                nakladnaya['vozvrat']['i']['ch25'] = checkInt(nakladnaya['vozvrat']['n']['ch25']) + checkInt(nakladnaya['vozvrat']['r']['ch25']) + checkInt(nakladnaya['vozvrat']['d1']['ch25']) + checkInt(nakladnaya['vozvrat']['d2']['ch25']) + checkInt(nakladnaya['vozvrat']['d3']['ch25']) + checkInt(nakladnaya['vozvrat']['s']['ch25'])
+                nakladnaya['vydano']['i']['ml'] = checkInt(nakladnaya['vydano']['n']['ml']) + checkInt(nakladnaya['vydano']['r']['ml']) + checkInt(nakladnaya['vydano']['d1']['ml']) + checkInt(nakladnaya['vydano']['d2']['ml']) + checkInt(nakladnaya['vydano']['d3']['ml'])
+                nakladnaya['vydano']['i']['kl'] = checkInt(nakladnaya['vydano']['n']['kl']) + checkInt(nakladnaya['vydano']['r']['kl']) + checkInt(nakladnaya['vydano']['d1']['kl']) + checkInt(nakladnaya['vydano']['d2']['kl']) + checkInt(nakladnaya['vydano']['d3']['kl'])
+                nakladnaya['vydano']['i']['chl'] = checkInt(nakladnaya['vydano']['n']['chl']) + checkInt(nakladnaya['vydano']['r']['chl']) + checkInt(nakladnaya['vydano']['d1']['chl']) + checkInt(nakladnaya['vydano']['d2']['chl']) + checkInt(nakladnaya['vydano']['d3']['chl'])
+                nakladnaya['vozvrat']['i']['ml'] = checkInt(nakladnaya['vozvrat']['s']['ml']) + checkInt(nakladnaya['vozvrat']['r']['ml']) + checkInt(nakladnaya['vozvrat']['d1']['ml']) + checkInt(nakladnaya['vozvrat']['d2']['ml']) + checkInt(nakladnaya['vozvrat']['d3']['ml'])
+                nakladnaya['vozvrat']['i']['kl'] = checkInt(nakladnaya['vozvrat']['s']['kl']) + checkInt(nakladnaya['vozvrat']['r']['kl']) + checkInt(nakladnaya['vozvrat']['d1']['kl']) + checkInt(nakladnaya['vozvrat']['d2']['kl']) + checkInt(nakladnaya['vozvrat']['d3']['kl'])
+                nakladnaya['vozvrat']['i']['chl'] = checkInt(nakladnaya['vozvrat']['r']['chl']) + checkInt(nakladnaya['vozvrat']['d1']['chl']) + checkInt(nakladnaya['vozvrat']['d2']['chl']) + checkInt(nakladnaya['vozvrat']['d3']['chl']) + checkInt(nakladnaya['vozvrat']['s']['chl'])
+                nakladnaya['vozvrat']['i']['ch10'] = checkInt(nakladnaya['vozvrat']['r']['ch10']) + checkInt(nakladnaya['vozvrat']['d1']['ch10']) + checkInt(nakladnaya['vozvrat']['d2']['ch10']) + checkInt(nakladnaya['vozvrat']['d3']['ch10']) + checkInt(nakladnaya['vozvrat']['s']['ch10'])
+                nakladnaya['vozvrat']['i']['ch25'] = checkInt(nakladnaya['vozvrat']['r']['ch25']) + checkInt(nakladnaya['vozvrat']['d1']['ch25']) + checkInt(nakladnaya['vozvrat']['d2']['ch25']) + checkInt(nakladnaya['vozvrat']['d3']['ch25']) + checkInt(nakladnaya['vozvrat']['s']['ch25'])
 
             }
 
@@ -364,7 +557,7 @@ const Plan = React.memo(
                 } else {
                     nakladnaya[where][type][what] = litr
                 }
-                /*if(type !== 's'&&where==='vozvrat'){
+                if(type !== 's'&&where==='vozvrat'){
                     nakladnaya[where][type]['ml'] = checkInt(nakladnaya[where][type]['m25']) * 24
                     nakladnaya[where][type]['chl'] = checkInt(nakladnaya[where][type]['ch25']) * 24 + checkInt(nakladnaya[where][type]['ch10']) * 10
                     nakladnaya[where][type]['kl'] = checkInt(nakladnaya[where][type]['k25']) * 24 + checkInt(nakladnaya[where][type]['k10']) * 10
@@ -373,11 +566,6 @@ const Plan = React.memo(
                     nakladnaya[where][type]['chl'] = checkInt(nakladnaya[where][type]['ch25']) * 24 + checkInt(nakladnaya[where][type]['ch10']) * 10
                     nakladnaya[where][type]['kl'] = checkInt(nakladnaya[where][type]['k25']) * 24 + checkInt(nakladnaya[where][type]['k10']) * 10
                 }*/
-                if(type !== 'n'){
-                    nakladnaya[where][type]['ml'] = checkInt(nakladnaya[where][type]['m25']) * 24
-                    nakladnaya[where][type]['chl'] = checkInt(nakladnaya[where][type]['ch25']) * 24 + checkInt(nakladnaya[where][type]['ch10']) * 10
-                    nakladnaya[where][type]['kl'] = checkInt(nakladnaya[where][type]['k25']) * 24 + checkInt(nakladnaya[where][type]['k10']) * 10
-                }
                 
                 let s = nakladnaya[where]['s']!==undefined?checkInt(nakladnaya[where]['s'][what]):0
                 nakladnaya[where]['i'][what] = checkInt(nakladnaya[where]['n'][what]) + checkInt(nakladnaya[where]['r'][what]) + checkInt(nakladnaya[where]['d1'][what]) + checkInt(nakladnaya[where]['d2'][what]) + checkInt(nakladnaya[where]['d3'][what]) + s
@@ -1674,14 +1862,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Максым 25:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vozvrat.s.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.s.m25}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 's', 'm25')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.s.m25}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -1697,14 +1878,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Чалап 25:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vozvrat.s.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.s.ch25}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 's', 'ch25')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.s.ch25}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -1712,14 +1886,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Чалап 10:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vozvrat.s.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.s.ch10}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 's', 'ch10')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.s.ch10}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -1735,14 +1902,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Квас 10:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vozvrat.s.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.s.k10}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 's', 'k10')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.s.k10}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -1799,14 +1959,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Максым 25:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vozvrat.i.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.i.m25}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 'i', 'm25')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.i.m25}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -1822,14 +1975,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Чалап 25:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vozvrat.i.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.i.ch25}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 'i', 'ch25')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.i.ch25}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -1837,14 +1983,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Чалап 10:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vozvrat.i.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.i.ch10}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 'i', 'ch10')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.i.ch10}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>
@@ -1860,14 +1999,7 @@ const Plan = React.memo(
                                 <div style={{display: 'inline-block', marginRight: '10px', verticalAlign: 'middle', fontWeight: 'bold'}}>
                                     Квас 10:
                                 </div>
-                                <TextField
-                                    disabled={status.role==='admin'?false:checkDate||status.role!=='организатор'||nakladnaya.vozvrat.i.o}
-                                    style={{display: 'inline-block', width: '70px', verticalAlign: 'middle'}}
-                                    type="number"
-                                    margin='normal'
-                                    value={nakladnaya.vozvrat.i.k10}
-                                    onChange={(event)=>{handleLitr(event, 'vozvrat', 'i', 'k10')}}
-                                />
+                                &nbsp;{nakladnaya.vozvrat.i.k10}
                             </center>
                         </ExpansionPanelDetails>
                         <ExpansionPanelDetails style={{padding: '0px'}}>

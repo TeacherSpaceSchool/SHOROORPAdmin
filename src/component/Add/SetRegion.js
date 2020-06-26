@@ -46,7 +46,6 @@ const Sign =  React.memo(
             async function fetchData() {
                 let data = [];
                 let _data = await tableActions.getDataSimple({name: 'РегионИмя'})
-                console.log(_data)
                 if (_data!==undefined) {
                     data = _data
                     data.unshift({name: 'ВСЕ', guid: ''})
